@@ -1,31 +1,30 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import { useGetPostsQuery } from "../services/api";
+import { useTheme } from "@mui/material/styles";
+import { useMediaQuery, Container } from "@mui/material";
+import LeftPane from "../components/Panes/LeftPane";
+import MainPane from "../components/Panes/MainPane";
+import RightPane from "../components/Panes/RightPane";
 
 const Home: React.FC = () => {
-  const { data } = useGetPostsQuery({
-    page: 1,
-  });
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <div>
-      <h1>Home</h1>
-
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/category/45">Category</Link>
-        <Link to="/post/23">Post</Link>
-      </nav>
-
-      {data?.results?.map((post) => (
-        <div key={post.id}>
-          <h2>{post.title}</h2>
-          <div>{post.content}</div>
-        </div>
-      ))}
-
-      <Outlet />
-    </div>
+    <Container
+      maxWidth="xl"
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "stretch",
+      }}
+    >
+      <LeftPane />
+      <MainPane />
+      {isMobile ? null : <RightPane />}
+    </Container>
   );
 };
 
