@@ -16,9 +16,7 @@ const Home: NextPage = () => {
 
       <main className="flex min-h-screen mx-auto">
         <Sidebar />
-
         <Feed />
-
         <Widgets newsResults={[]} randomUsersResults={null} />
       </main>
     </div>

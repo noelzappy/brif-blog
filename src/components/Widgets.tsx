@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Widgets({ newsResults, randomUsersResults }) {
   const [articleNum, setArticleNum] = useState(3);
   const [randomUserNum, setRandomUserNum] = useState(3);
+
   return (
     <div className="xl:w-[600px] hidden lg:inline ml-8 space-y-5">
       <div className="w-[90%] xl:w-[75%] sticky top-0 bg-white py-1.5 z-50">
@@ -36,7 +37,7 @@ export default function Widgets({ newsResults, randomUsersResults }) {
         </AnimatePresence>
         <button
           onClick={() => setArticleNum(articleNum + 3)}
-          className="text-blue-300 pl-4 pb-3 hover:text-blue-400"
+          className="text-violet-300 pl-4 pb-3 hover:text-violet-400"
         >
           Show more
         </button>
@@ -79,7 +80,7 @@ export default function Widgets({ newsResults, randomUsersResults }) {
         </AnimatePresence>
         <button
           onClick={() => setRandomUserNum(randomUserNum + 3)}
-          className="text-blue-300 pl-4 pb-3 hover:text-blue-400"
+          className="text-violet-300 pl-4 pb-3 hover:text-violet-400"
         >
           Show more
         </button>
