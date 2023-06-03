@@ -8,8 +8,6 @@ import Widgets from "../components/Widgets";
 import { Config } from "../config";
 
 function App({ Component, pageProps }: AppProps) {
-
-
   return (
     <Provider store={store}>
       <main className="flex min-h-screen mx-auto">
@@ -22,4 +20,3 @@ function App({ Component, pageProps }: AppProps) {
 }
 
 export default App;
-
