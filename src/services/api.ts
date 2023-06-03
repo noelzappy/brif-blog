@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetPostsQuery, QueryResult, Post } from "../types/all";
+import { GetPostsQuery, QueryResult, Post, Category } from "../types/all";
 import { Config } from "../config";
 
 export const appApi = createApi({
@@ -19,7 +19,12 @@ export const appApi = createApi({
     getPost: builder.query<Post, string>({
       query: (id) => `/posts/slug/${id}`,
     }),
+
+    getCategories: builder.query<Category[], void>({
+      query: () => `/categories`,
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetPostQuery } = appApi;
+export const { useGetPostsQuery, useGetPostQuery, useGetCategoriesQuery } =
+  appApi;

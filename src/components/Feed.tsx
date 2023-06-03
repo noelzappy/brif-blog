@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import ReactLoading from "react-loading";
 
 import Post from "./Post";
 import useInfiniteQuery from "../hooks/useInfiniteQuery";
@@ -7,8 +7,6 @@ import { appApi } from "../services/api";
 import type { Post as PostType } from "../types/all";
 
 export default function Feed() {
-  const [posts, setPosts] = useState([]);
-
   const res = useInfiniteQuery<PostType>(appApi.endpoints.getPosts);
 
   return (
@@ -16,6 +14,18 @@ export default function Feed() {
       <div className="flex py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
         <h2 className="text-lg sm:text-xl font-bold cursor-pointer">Home</h2>
       </div>
+
+      {res.isLoading && (
+        <div className="flex justify-center items-center h-[500px] w-full">
+          <ReactLoading type="spin" color="#4f04f6" height={50} width={50} />
+        </div>
+      )}
+
+      {!res.isLoading && res.data?.length < 1 && (
+        <div className="flex justify-center items-center h-[500px] w-full">
+          <h1 className="text-2xl font-bold text-red-500">No posts found</h1>
+        </div>
+      )}
 
       <AnimatePresence>
         <div className="mx-auto mt-2 max-w-2xl sm:mt-4 sm:pt-4 lg:mx-0 lg:max-w-none p-5">

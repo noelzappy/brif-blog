@@ -38,7 +38,7 @@ export default function Post({ post }: PostProps) {
             </time>
             <div className="flex items-center gap-x-2 text-gray-500">
               <a
-                href={`/category/${post.category.slug}`}
+                href={`/category/${post.category.slug}?id=${post.category.id}&name=${post.category.name}`}
                 className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
               >
                 {post.category.name}

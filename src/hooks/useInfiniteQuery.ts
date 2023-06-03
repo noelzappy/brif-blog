@@ -22,7 +22,7 @@ function useInfiniteQuery<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const load = async (p) => {
+  const load = async (p: Params) => {
     setLoading(true);
     await trigger(p);
     setLoading(false);

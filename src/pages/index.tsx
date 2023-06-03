@@ -1,10 +1,6 @@
-import { NextPage } from "next";
 import Head from "next/head";
 
 import Feed from "../components/Feed";
-import Sidebar from "../components/Sidebar";
-import Widgets from "../components/Widgets";
-import { Config } from "../config";
 
 export default function Home({ categories }) {
   return (
@@ -15,30 +11,7 @@ export default function Home({ categories }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen mx-auto">
-        <Sidebar categories={categories} />
-        <Feed />
-        <Widgets newsResults={[]} randomUsersResults={null} />
-      </main>
+      <Feed />
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  let categories = [];
-
-  try {
-    const res = await fetch(Config.API_URL + "/categories").then((res) =>
-      res.json()
-    );
-    categories = res;
-  } catch (error) {
-    // console.log(error);
-  }
-
-  return {
-    props: {
-      categories,
-    },
-  };
 }

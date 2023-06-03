@@ -2,15 +2,16 @@ import Image from "next/image";
 import SidebarMenuItem from "./SidebarMenuItem";
 import { HomeIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
-import { Category } from "../types/all";
+import ReactLoading from "react-loading";
+
 import MenuItem from "./MenuItem";
+import { useGetCategoriesQuery } from "../services/api";
 
-type Props = {
-  categories: Category[];
-};
+type Props = {};
 
-export default function Sidebar({ categories }: Props) {
+export default function Sidebar({}: Props) {
   const router = useRouter();
+  const { data: categories, isLoading } = useGetCategoriesQuery();
 
   return (
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24">
@@ -35,15 +36,27 @@ export default function Sidebar({ categories }: Props) {
           onClick={() => router.push("/")}
         />
 
+        {isLoading && (
+          <div className="flex justify-center items-center h-[500px] w-full">
+            <ReactLoading type="spin" color="#4f04f6" height={50} width={50} />
+          </div>
+        )}
+
         <div>
-          {categories.map((category) => (
-            <MenuItem
-              text={category.name}
-              key={category.id}
-              active={false}
-              onClick={() => router.push(`/category/${category.slug}`)}
-            />
-          ))}
+          {categories &&
+            categories.map((category) => (
+              <MenuItem
+                text={category.name}
+                key={category.id}
+                active={false}
+                onClick={() =>
+                  router.push({
+                    pathname: `/category/${category.slug}`,
+                    query: { id: category.id, name: category.name },
+                  })
+                }
+              />
+            ))}
         </div>
       </div>
     </div>
