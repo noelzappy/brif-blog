@@ -15,7 +15,11 @@ export const appApi = createApi({
         };
       },
     }),
+
+    getPost: builder.query<Post, string>({
+      query: (id) => `/posts/slug/${id}`,
+    }),
   }),
 });
 
-export const { useGetPostsQuery } = appApi;
+export const { useGetPostsQuery, useGetPostQuery } = appApi;
