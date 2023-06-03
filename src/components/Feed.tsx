@@ -19,17 +19,25 @@ export default function Feed({ category }: Props) {
   const { searchTerm } = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
-    if (category) {
-      res.trigger({ page: 1, category });
+    if (category || searchTerm) {
+      const params = {
+        page: 1,
+      };
+      if (category) params["category"] = category;
+      if (searchTerm) params["search"] = searchTerm;
+
+      res.trigger(params);
     }
-  }, [category]);
+
+    if (!category && !searchTerm) res.refetch();
+  }, [category, searchTerm]);
 
   return (
     <>
       {searchTerm}
 
       {res.isLoading && (
-        <div className="flex justify-center items-center h-[500px] w-full">
+        <div className="flex justify-center items-center h-[10px] w-full">
           <ReactLoading type="spin" color="#4f04f6" height={50} width={50} />
         </div>
       )}

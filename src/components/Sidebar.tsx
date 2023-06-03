@@ -6,9 +6,6 @@ import ReactLoading from "react-loading";
 
 import MenuItem from "./MenuItem";
 import { useGetCategoriesQuery } from "../services/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setActiveTab } from "../store/AppSlice";
-import { RootState } from "../store";
 
 type Props = {};
 

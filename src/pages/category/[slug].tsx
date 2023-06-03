@@ -4,13 +4,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import Feed from "../../components/Feed";
-import { useDispatch } from "react-redux";
-import { setActiveTab } from "../../store/AppSlice";
 
 export default function CategoryPage({}) {
   const router = useRouter();
   const { name: categoryName, id: categoryId } = router.query;
-  const d = useDispatch();
 
   return (
     <div>
