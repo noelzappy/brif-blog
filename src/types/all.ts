@@ -1,4 +1,6 @@
-export type Paginated<T> = {
+import { type } from "os";
+
+export type QueryResult<T> = {
   results: T[];
   totalResults: number;
   totalPages: number;
@@ -14,12 +16,26 @@ export type Post = {
   author: Author;
   datePublished: string;
   status: string;
+  slug: string;
+  excerpt: string;
+  tags: string[];
+  slug_history: string[];
+  category: Category;
 };
 
 export type Author = {
   id: string;
   name: string;
   email: string;
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  slug_history: string[];
+  image: string;
+  description: string;
 };
 
 export type GetPostsQuery = {
@@ -31,4 +47,16 @@ export type GetPostsQuery = {
   page?: number;
   limit?: number;
   sortBy?: string;
+};
+
+export type UseInfiniteHook<T> = {
+  data: T[];
+  isLoading: boolean;
+  hasNextPage: boolean;
+  fetchNextPage: () => void;
+  refetch: () => void;
+  trigger: (params: any) => void;
+  isSuccess: boolean;
+  isError: boolean;
+  error: any;
 };

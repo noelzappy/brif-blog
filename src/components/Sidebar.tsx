@@ -1,19 +1,15 @@
 import Image from "next/image";
 import SidebarMenuItem from "./SidebarMenuItem";
 import { HomeIcon } from "@heroicons/react/solid";
-import {
-  BellIcon,
-  BookmarkIcon,
-  ClipboardIcon,
-  DotsCircleHorizontalIcon,
-  DotsHorizontalIcon,
-  HashtagIcon,
-  InboxIcon,
-  UserIcon,
-} from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { Category } from "../types/all";
+import MenuItem from "./MenuItem";
 
-export default function Sidebar() {
+type Props = {
+  categories: Category[];
+};
+
+export default function Sidebar({ categories }: Props) {
   const router = useRouter();
 
   return (
@@ -27,20 +23,27 @@ export default function Sidebar() {
           height="70"
           src="/images/thebrif_logo.jpeg"
           alt="the brif logo"
+          priority
         />
       </div>
 
       <div className="mt-4 mb-2.5 xl:items-start">
-        <SidebarMenuItem text="Home" Icon={HomeIcon} active />
-        <SidebarMenuItem text="Explore" Icon={HashtagIcon} active />
+        <SidebarMenuItem
+          text="Home"
+          Icon={HomeIcon}
+          active
+          onClick={() => router.push("/")}
+        />
 
         <div>
-          <SidebarMenuItem text="Notifications" Icon={BellIcon} active />
-          <SidebarMenuItem text="Messages" Icon={InboxIcon} active />
-          <SidebarMenuItem text="Bookmarks" Icon={BookmarkIcon} active />
-          <SidebarMenuItem text="Lists" Icon={ClipboardIcon} active />
-          <SidebarMenuItem text="Profile" Icon={UserIcon} active />
-          <SidebarMenuItem text="More" Icon={DotsCircleHorizontalIcon} active />
+          {categories.map((category) => (
+            <MenuItem
+              text={category.name}
+              key={category.id}
+              active={false}
+              onClick={() => router.push(`/category/${category.slug}`)}
+            />
+          ))}
         </div>
       </div>
     </div>

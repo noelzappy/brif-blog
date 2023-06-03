@@ -4,8 +4,9 @@ import Head from "next/head";
 import Feed from "../components/Feed";
 import Sidebar from "../components/Sidebar";
 import Widgets from "../components/Widgets";
+import { Config } from "../config";
 
-const Home: NextPage = () => {
+export default function Home({ categories }) {
   return (
     <div>
       <Head>
@@ -15,12 +16,29 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex min-h-screen mx-auto">
-        <Sidebar />
+        <Sidebar categories={categories} />
         <Feed />
         <Widgets newsResults={[]} randomUsersResults={null} />
       </main>
     </div>
   );
-};
+}
 
-export default Home;
+export async function getServerSideProps() {
+  let categories = [];
+
+  try {
+    const res = await fetch(Config.API_URL + "/categories").then((res) =>
+      res.json()
+    );
+    categories = res;
+  } catch (error) {
+    // console.log(error);
+  }
+
+  return {
+    props: {
+      categories,
+    },
+  };
+}
