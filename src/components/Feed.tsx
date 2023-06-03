@@ -34,10 +34,8 @@ export default function Feed({ category }: Props) {
 
   return (
     <>
-      {searchTerm}
-
       {res.isLoading && (
-        <div className="flex justify-center items-center h-[10px] w-full">
+        <div className="flex justify-center items-center h-[10px] w-full mt-10">
           <ReactLoading type="spin" color="#4f04f6" height={50} width={50} />
         </div>
       )}
