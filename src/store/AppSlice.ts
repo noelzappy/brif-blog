@@ -3,10 +3,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface AppState {
   searchTerm: string;
+  activeTab: string;
 }
 
 const initialState: AppState = {
   searchTerm: "",
+  activeTab: "home",
 };
 
 export const appSlice = createSlice({
@@ -20,9 +22,14 @@ export const appSlice = createSlice({
     clearSearchTerm: (state) => {
       state.searchTerm = "";
     },
+
+    setActiveTab: (state, action: PayloadAction<string>) => {
+      state.activeTab = action.payload;
+    },
   },
 });
 
-export const { setSearchTerm, clearSearchTerm } = appSlice.actions;
+export const { setSearchTerm, clearSearchTerm, setActiveTab } =
+  appSlice.actions;
 
 export default appSlice.reducer;

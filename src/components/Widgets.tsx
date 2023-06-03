@@ -2,10 +2,16 @@ import { SearchIcon } from "@heroicons/react/outline";
 import News from "./News";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { setSearchTerm } from "../store/AppSlice";
 
 export default function Widgets({ newsResults, randomUsersResults }) {
   const [articleNum, setArticleNum] = useState(3);
   const [randomUserNum, setRandomUserNum] = useState(3);
+
+  const d = useDispatch();
+  const { searchTerm } = useSelector((state: RootState) => state.app);
 
   return (
     <div className="xl:w-[600px] hidden lg:inline ml-8 space-y-5">
@@ -16,6 +22,8 @@ export default function Widgets({ newsResults, randomUsersResults }) {
             className="absolute inset-0 rounded-full pl-11 border-gray-500 text-gray-700 focus:shadow-lg focus:bg-white bg-gray-100 "
             type="text"
             placeholder="Search theBrif"
+            value={searchTerm}
+            onChange={(e) => d(setSearchTerm(e.target.value))}
           />
         </div>
       </div>

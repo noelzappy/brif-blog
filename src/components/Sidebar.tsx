@@ -6,6 +6,9 @@ import ReactLoading from "react-loading";
 
 import MenuItem from "./MenuItem";
 import { useGetCategoriesQuery } from "../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveTab } from "../store/AppSlice";
+import { RootState } from "../store";
 
 type Props = {};
 
@@ -13,11 +16,16 @@ export default function Sidebar({}: Props) {
   const router = useRouter();
   const { data: categories, isLoading } = useGetCategoriesQuery();
 
+  const { slug } = router.query;
+
   return (
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24">
       <div
         className="hoverEffect p-0 hover:bg-blue-100 xl:px-1"
-        onClick={() => router.push("/")}
+        onClick={() => {
+          if (router.asPath === "/") return;
+          router.push("/");
+        }}
       >
         <Image
           width="70"
@@ -32,8 +40,12 @@ export default function Sidebar({}: Props) {
         <SidebarMenuItem
           text="Home"
           Icon={HomeIcon}
-          active
-          onClick={() => router.push("/")}
+          active={router.pathname === "/"}
+          onClick={() => {
+            if (router.pathname === "/") return;
+
+            router.push("/");
+          }}
         />
 
         {isLoading && (
@@ -48,13 +60,14 @@ export default function Sidebar({}: Props) {
               <MenuItem
                 text={category.name}
                 key={category.id}
-                active={false}
-                onClick={() =>
+                onClick={() => {
+                  if (slug === category.slug) return;
                   router.push({
                     pathname: `/category/${category.slug}`,
                     query: { id: category.id, name: category.name },
-                  })
-                }
+                  });
+                }}
+                active={slug === category.slug}
               />
             ))}
         </div>

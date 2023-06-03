@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactLoading from "react-loading";
 
@@ -5,15 +6,27 @@ import Post from "./Post";
 import useInfiniteQuery from "../hooks/useInfiniteQuery";
 import { appApi } from "../services/api";
 import type { Post as PostType } from "../types/all";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
-export default function Feed() {
+type Props = {
+  category?: string;
+};
+
+export default function Feed({ category }: Props) {
   const res = useInfiniteQuery<PostType>(appApi.endpoints.getPosts);
 
+  const { searchTerm } = useSelector((state: RootState) => state.app);
+
+  useEffect(() => {
+    if (category) {
+      res.trigger({ page: 1, category });
+    }
+  }, [category]);
+
   return (
-    <div className="xl:ml-[370px] border-l border-r border-gray-200  xl:min-w-[576px] sm:ml-[73px] flex-grow max-w-xl">
-      <div className="flex py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
-        <h2 className="text-lg sm:text-xl font-bold cursor-pointer">Home</h2>
-      </div>
+    <>
+      {searchTerm}
 
       {res.isLoading && (
         <div className="flex justify-center items-center h-[500px] w-full">
@@ -42,6 +55,6 @@ export default function Feed() {
           ))}
         </div>
       </AnimatePresence>
-    </div>
+    </>
   );
 }

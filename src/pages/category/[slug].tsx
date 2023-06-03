@@ -2,28 +2,15 @@ import React, { useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from "framer-motion";
-import ReactLoading from "react-loading";
 
-import Post from "../../components/Post";
-import { appApi } from "../../services/api";
-import useInfiniteQuery from "../../hooks/useInfiniteQuery";
-import { Post as PostType } from "../../types/all";
+import Feed from "../../components/Feed";
+import { useDispatch } from "react-redux";
+import { setActiveTab } from "../../store/AppSlice";
 
 export default function CategoryPage({}) {
   const router = useRouter();
-  const { slug, name: categoryName, id: categoryId } = router.query;
-
-  const res = useInfiniteQuery<PostType>(appApi.endpoints.getPosts, {
-    page: 1,
-    category: categoryId,
-  });
-
-  useEffect(() => {
-    if (categoryId) {
-      res.trigger({ page: 1, category: categoryId });
-    }
-  }, [categoryId]);
+  const { name: categoryName, id: categoryId } = router.query;
+  const d = useDispatch();
 
   return (
     <div>
@@ -35,41 +22,19 @@ export default function CategoryPage({}) {
 
       <div className="xl:ml-[370px] border-l border-r border-gray-200  xl:min-w-[576px] sm:ml-[73px] flex-grow max-w-xl p-5">
         <div className="flex items-center space-x-2  py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
-          <div className="hoverEffect" onClick={() => router.push("/")}>
+          <div
+            className="hoverEffect"
+            onClick={() => {
+              router.back();
+            }}
+          >
             <ArrowLeftIcon className="h-5 " />
           </div>
           <h2 className="text-lg sm:text-xl font-bold cursor-pointer">
             {categoryName}
           </h2>
         </div>
-
-        {res.isLoading && (
-          <div className="flex justify-center items-center h-[500px] w-full">
-            <ReactLoading type="spin" color="#4f04f6" height={50} width={50} />
-          </div>
-        )}
-
-        {!res.isLoading && res.data?.length < 1 && (
-          <div className="flex justify-center items-center h-[500px] w-full">
-            <h1 className="text-2xl font-bold text-red-500">No posts found</h1>
-          </div>
-        )}
-
-        <AnimatePresence>
-          <div className="mx-auto mt-2 max-w-2xl sm:mt-4 sm:pt-4 lg:mx-0 lg:max-w-none p-5">
-            {res.data?.map((post) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              >
-                <Post post={post} />
-              </motion.div>
-            ))}
-          </div>
-        </AnimatePresence>
+        <Feed category={categoryId as string} />
       </div>
     </div>
   );
