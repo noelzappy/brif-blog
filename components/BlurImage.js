@@ -7,6 +7,7 @@ const classNames = (...classes) => {
 
 const BlurImage = ({ src, alt, className, ...props }) => {
   const [isLoading, setLoading] = useState(true);
+  if (!src) return null;
 
   return (
     <Image

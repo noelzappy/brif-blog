@@ -40,7 +40,10 @@ const Author = ({
           <h4 className="text-dark mb-1">{title}</h4>
           <p className="mb-2 small">{subtitle}</p>
           <span className="me-2">
-            <Markdown content={truncateString(authorContent, 85)} inline={true} />
+            <Markdown
+              content={truncateString(authorContent, 85)}
+              inline={true}
+            />
           </span>
           <Link
             href={`/author/${authorSlug}`}

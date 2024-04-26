@@ -1,15 +1,9 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import Post from "@/components/Post";
-import { getAuthors } from "@/libs/getAuthors";
-import { getPosts } from "@/libs/getPosts";
+import * as API from "@/libs/contentApi";
 
-const FeaturedPosts = ({ posts, authors }) => {
-  // Featured Posts
-  const featuredPosts = posts.filter((post) => {
-    if (post.frontMatter.featured === true) return post;
-  });
-
+const FeaturedPosts = ({ posts }) => {
   return (
     <Layout metaTitle="Featured Posts">
       <PageHeader title="Featured Posts" />
@@ -17,9 +11,9 @@ const FeaturedPosts = ({ posts, authors }) => {
       <section className="section pt-0">
         <div className="container">
           <div className="row gy-5 gx-4 g-xl-5">
-            {featuredPosts.map((post, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <Post post={post} authors={authors} />
+            {posts?.map((post, i) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} />
               </div>
             ))}
           </div>
@@ -32,11 +26,12 @@ const FeaturedPosts = ({ posts, authors }) => {
 export default FeaturedPosts;
 
 // Export Props
-export const getStaticProps = () => {
+export const getStaticProps = async () => {
+  const posts = await API.getFeaturedPosts();
+
   return {
     props: {
-      posts: getPosts(),
-      authors: getAuthors(),
+      posts,
     },
   };
 };

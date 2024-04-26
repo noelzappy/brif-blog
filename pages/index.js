@@ -3,63 +3,12 @@ import Layout from "@/components/Layout";
 import Pagination from "@/components/Pagination";
 import Post from "@/components/Post";
 import Markdown from "@/components/ReactMarkdown";
-import siteConfig from "@/config/site.config.json";
-import { getAuthors } from "@/libs/getAuthors";
-import { getPosts } from "@/libs/getPosts";
-import { getSinglePage } from "@/libs/getSinglePage";
 import { formatDate } from "@/utils/formatDate";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Calender,
-  Clock,
-  EditCircle,
-} from "@/utils/Icons";
-import { readingTime } from "@/utils/readingTime";
-import { slugify } from "@/utils/slugify";
-import { sortArrayByCount } from "@/utils/sortArrayByCount";
+import { ArrowUpRight, Calender, Clock, EditCircle } from "@/utils/Icons";
 import Link from "next/link";
+import * as API from "@/libs/contentApi";
 
-const Home = ({ homepage, posts, authors }) => {
-  const { banner, featuredPost, allCategories, recentPost, topAuthor } =
-    homepage.frontMatter;
-
-  // Featured Posts
-  const featuredPosts = posts.filter(
-    (post) => post.frontMatter.featured === true
-  );
-
-  // Post of the Month
-  const postOfTheMonth = posts.filter((post) => {
-    if (post.frontMatter.postOfTheMonth === true) return post;
-  });
-
-  // Post Categories
-  const allCategory = posts.map((category) => category.frontMatter.categories);
-  const flatCategory = allCategory.flat();
-  const uniqueCategory = sortArrayByCount(flatCategory);
-
-  // Top Authors
-  const allAuthor = posts.map((author) => author.frontMatter.author);
-  const sortedAuthor = sortArrayByCount(allAuthor);
-  const topAuthors = sortedAuthor.map((x) => {
-    const allAuthors = authors.find((y) => {
-      if (x.value == y.authorFrontMatter.title) {
-        return y.authorFrontMatter.title;
-      }
-    });
-    return allAuthors;
-  });
-
-  // Post Count by Author
-  const postCount = [];
-  allAuthor.forEach((x) => {
-    postCount[x] = (postCount[x] || 0) + 1;
-  });
-
-  // Post per Page
-  const postPerPage = Math.ceil(posts.length / siteConfig.postPerPage);
-
+const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
   return (
     <Layout>
       {/* Banner */}
@@ -89,46 +38,38 @@ const Home = ({ homepage, posts, authors }) => {
           <div className="row align-items-center section-title">
             <div className="col-sm-7">
               <h2 className="h3 mb-0 title">
-                <Markdown content={featuredPost.title} inline={true} />
+                <Markdown content="Featured Posts" inline={true} />
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
               <Link href="/featured/" className="text-link lead active">
-                <Markdown content={featuredPost.linkLabel} inline={true} />
+                <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
           </div>
           <div className="row gy-5 gx-md-5">
             <div className="col-lg-4 col-md-6 order-0">
-              <Post post={featuredPosts[0]} authors={authors} />
+              <Post post={featuredPosts[0]} />
             </div>
             <div className="col-lg-4 col-md-12 order-2 order-lg-1">
               <div className="row gx-0 gx-md-5 gx-lg-0 gy-5">
                 <div className="col-lg-12 col-md-6">
-                  <Post
-                    post={featuredPosts[1]}
-                    authors={authors}
-                    compact={true}
-                  />
+                  <Post post={featuredPosts[1]} compact={true} />
                 </div>
                 <div className="col-lg-12 col-md-6">
-                  <Post
-                    post={featuredPosts[2]}
-                    authors={authors}
-                    compact={true}
-                  />
+                  <Post post={featuredPosts[2]} compact={true} />
                 </div>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 order-1 order-lg-2">
-              <Post post={featuredPosts[3]} authors={authors} />
+              <Post post={featuredPosts[3]} />
             </div>
           </div>
           <div className="d-block d-sm-none mt-5 pt-3">
             <div className="text-center">
               <Link href="/featured/" className="text-link lead active">
-                <Markdown content={featuredPost.linkLabel} inline={true} />
+                <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
@@ -137,7 +78,7 @@ const Home = ({ homepage, posts, authors }) => {
       </section>
 
       {/* All Categories */}
-      <section className="section bg-white">
+      {/*      <section className="section bg-white">
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
@@ -178,7 +119,7 @@ const Home = ({ homepage, posts, authors }) => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Recent Posts */}
       <section className="section">
@@ -186,25 +127,25 @@ const Home = ({ homepage, posts, authors }) => {
           <div className="row align-items-center section-title">
             <div className="col-sm-7">
               <h2 className="h3 mb-0 title">
-                <Markdown content={recentPost.title} inline={true} />
+                <Markdown content="Recent Posts" inline={true} />
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
               <Link href="/blog/" className="text-link lead active">
-                <Markdown content={recentPost.linkLabel} inline={true} />
+                <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
           </div>
           <div className="row gy-5 gx-md-5">
-            {posts.slice(0, 6).map((post, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <Post post={post} authors={authors} />
+            {recentPosts.slice(0, 6).map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} />
               </div>
             ))}
 
             <div className="col-12 text-center pt-4 mt-5">
-              <Pagination currentPage={1} numberOfPages={postPerPage} />
+              <Pagination currentPage={1} numberOfPages={4} />
             </div>
           </div>
         </div>
@@ -216,51 +157,46 @@ const Home = ({ homepage, posts, authors }) => {
           <div className="row align-items-center section-title">
             <div className="col-sm-7">
               <h2 className="h3 mb-0 title">
-                <Markdown content={topAuthor.title} inline={true} />
+                <Markdown content="Top Authors" inline={true} />
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
               <Link href="/author/" className="text-link lead active">
-                <Markdown content={topAuthor.linkLabel} inline={true} />
+                <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
           </div>
           <div className="row gy-5 gx-md-5">
-            {topAuthors.slice(0, 3).map((author, i) => (
-              <div className="col-lg-4 col-md-6" key={i}>
+            {authors.map((author) => (
+              <div className="col-lg-4 col-md-6" key={author.id}>
                 <Link
-                  href={`/author/${author.authorSlug}`}
+                  href={`/author/${author.slug}`}
                   className="bg-body text-dark p-3 d-flex is-hoverable"
-                  title={author.authorFrontMatter.title}
+                  title={author.name}
                 >
                   <div className="flex-shrink-0 me-3">
                     <BlurImage
                       className="shadow img-fluid"
-                      src={author.authorFrontMatter.image}
-                      alt={author.authorFrontMatter.title}
-                      width="90"
-                      height="90"
+                      src={author.profile_image}
+                      alt={author.name}
+                      width={90}
+                      height={90}
                     />
                   </div>
                   <div className="flex-grow-1">
                     <div className="d-flex flex-column h-100">
                       <div>
                         <h3 className="h4 text-dark mb-1 line-clamp clamp-1">
-                          {author.authorFrontMatter.title}
+                          {author.name}
                         </h3>
                         <p className="mb-2 lh-1 line-clamp clamp-1">
-                          {author.authorFrontMatter.subtitle}
+                          {author.name}
                         </p>
                       </div>
                       <p className="fw-medium mt-auto mb-0 small">
                         <EditCircle className="me-2" />
-                        <span className="text-black">
-                          {postCount[author.authorFrontMatter.title] < 9
-                            ? "0" + postCount[author.authorFrontMatter.title]
-                            : postCount[author.authorFrontMatter.title]}
-                        </span>{" "}
-                        Published posts
+                        <span className="text-black">12</span> Published posts
                       </p>
                     </div>
                   </div>
@@ -271,7 +207,7 @@ const Home = ({ homepage, posts, authors }) => {
           <div className="d-block d-sm-none mt-5 pt-3">
             <div className="text-center">
               <Link href="/author/" className="text-link lead active">
-                <Markdown content={topAuthor.linkLabel} inline={true} />
+                <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
@@ -280,12 +216,12 @@ const Home = ({ homepage, posts, authors }) => {
       </section>
 
       {/* Post of the Month */}
-      {postOfTheMonth.slice(0, 1).map((post, i) => (
+      {featuredPosts.slice(0, 1).map((post, i) => (
         <section
           key={i}
           className="post-of-the-month"
           style={{
-            backgroundImage: `url(${post.frontMatter.image})`,
+            backgroundImage: `url(${post.feature_image})`,
           }}
         >
           <div className="container">
@@ -300,12 +236,12 @@ const Home = ({ homepage, posts, authors }) => {
                 <ul className="post-meta list-inline mb-4 text-light">
                   <li className="list-inline-item">
                     <Calender className="me-1 align-bottom" />
-                    {formatDate(post.frontMatter.date)}
+                    {formatDate(post.published_at)}
                   </li>
                   <li className="list-inline-item">•</li>
                   <li className="list-inline-item">
                     <Clock className="me-1 align-bottom" />
-                    {readingTime(post.content)} min read
+                    {post.reading_time} min read
                   </li>
                 </ul>
 
@@ -314,38 +250,31 @@ const Home = ({ homepage, posts, authors }) => {
                     className="text-white text-link stretched-link"
                     href={`/blog/${post.slug}`}
                   >
-                    {post.frontMatter.title}
+                    {post.title}
                   </Link>
                 </h3>
 
                 <div className="post-author">
                   <Link
-                    href={`/author/${slugify(post.frontMatter.author)}`}
+                    href={`/author/${post.primary_author.slug}`}
                     className="is-hoverable"
-                    title={`Read all posts by - ${post.frontMatter.author}`}
+                    title={`Read all posts by - ${post.primary_author.name}`}
                   >
-                    {authors.map(
-                      (authorPage, key) =>
-                        slugify(post.frontMatter.author) ===
-                          authorPage.authorSlug && (
-                          <BlurImage
-                            key={key}
-                            src={authorPage.authorFrontMatter.image}
-                            alt={post.frontMatter.author}
-                            className="w-auto me-3"
-                            width="26"
-                            height="26"
-                          />
-                        )
-                    )}
+                    <BlurImage
+                      src={post.primary_author.profile_image}
+                      alt={post.primary_author.name}
+                      className="w-auto me-3"
+                      width={26}
+                      height={26}
+                    />
                   </Link>
                   <span className="text-light me-1">by </span>
                   <Link
                     className="text-link text-white"
-                    href={`/author/${slugify(post.frontMatter.author)}`}
-                    title={`Read all posts by - ${post.frontMatter.author}`}
+                    href={`/author/${post.primary_author.slug}`}
+                    title={`Read all posts by - ${post.primary_author.name}`}
                   >
-                    {post.frontMatter.author}
+                    {post.primary_author.name}
                   </Link>
                 </div>
               </div>
@@ -360,12 +289,17 @@ export default Home;
 
 // Export Props
 export const getStaticProps = async () => {
+  const featuredPosts = await API.getFeaturedPosts();
+  const recentPosts = await API.getRecentPosts();
+  const authors = await API.getAuthors();
+  const settings = await API.getSettings();
+
   return {
     props: {
-      homepage: getSinglePage("content/_index.md"),
-      posts: getPosts(),
-
-      authors: getAuthors(),
+      featuredPosts,
+      recentPosts,
+      authors,
+      settings,
     },
   };
 };
