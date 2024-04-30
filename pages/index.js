@@ -42,7 +42,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/featured/" className="text-link lead active">
+              <Link href="/articles/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -129,7 +129,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/blog/" className="text-link lead active">
+              <Link href="/articles/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -159,7 +159,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/author/" className="text-link lead active">
+              <Link href="/authors/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
