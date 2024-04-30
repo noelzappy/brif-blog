@@ -68,7 +68,7 @@ export const getRelatedPosts = async (tag) => {
   return api.posts.browse({
     filter: `tags.slug:${tag}`,
     include: "authors",
-    order: "published_at:desc",
+    sort: "published_at:desc",
     limit: 3,
   });
 };

@@ -122,7 +122,7 @@ export default function PostPage({ post, relatedPosts }) {
                     ))}
                   </ul>
 
-                  <SharePost title={post.title} pageUrl={post.slug} />
+                  <SharePost title={post.title} slug={post.slug} />
                 </div>
               </div>
 
