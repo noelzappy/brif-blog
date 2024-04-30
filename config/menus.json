@@ -1,0 +1,35 @@
+{
+  "mainMenu": [
+    {
+      "name": "Home",
+      "link": "/"
+    },
+    {
+      "name": "Featured",
+      "link": "/featured"
+    },
+    {
+      "name": "Latest",
+      "link": "/blog"
+    },
+    {
+      "name": "About",
+      "link": "/about"
+    },
+
+    {
+      "name": "Contact",
+      "link": "/contact"
+    }
+  ],
+  "footerMenu": [
+    {
+      "name": "Terms of service",
+      "link": "/terms-of-service"
+    },
+    {
+      "name": "Privacy policy",
+      "link": "/privacy"
+    }
+  ]
+}

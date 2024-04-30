@@ -1,32 +1,36 @@
 {
+  "name": "theBrif",
+  "author": "Emmanuel",
+  "description": "theBrif.com website",
+  "version": "2.0.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "node libs/generate-posts-data.js && next-remote-watch ./content",
+    "build": "node libs/generate-posts-data.js && next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@heroicons/react": "^1.0.6",
-    "@reduxjs/toolkit": "^1.9.5",
-    "date-fns": "^2.29.3",
-    "framer-motion": "^10.12.16",
+    "@popperjs/core": "^2.11.8",
+    "@tryghost/content-api": "^1.11.21",
+    "bootstrap": "5.3.0",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
     "gray-matter": "^4.0.3",
-    "moment": "^2.29.4",
-    "next": "latest",
+    "next": "13.4.10",
+    "next-themes": "^0.2.1",
+    "parse-numeric-range": "^1.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-loading": "^2.0.3",
-    "react-moment": "^1.1.3",
-    "react-redux": "^8.0.7",
-    "remark": "^14.0.2",
-    "remark-html": "^15.0.1"
+    "react-icons": "^4.10.1",
+    "react-markdown": "^8.0.7",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-raw": "^6.1.1",
+    "remark-gfm": "^3.0.1",
+    "sass": "^1.63.6"
   },
   "devDependencies": {
-    "@types/node": "20.2.5",
-    "@types/react": "18.2.8",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2",
-    "typescript": "5.1.3"
+    "next-remote-watch": "^2.0.0"
   }
 }

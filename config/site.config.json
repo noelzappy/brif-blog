@@ -1,0 +1,41 @@
+{
+  "metaData": {
+    "title": "theBrif",
+    "description": "theBrif - The News Made Concise",
+    "author": "theBrif",
+    "keyword": "Africa Business Politics Travel Africa: Visa-Free Travel Becoming a Reality by Hubert.io November 9, 2023 Ai Artificial Intelligence Tech Technology GROK VS GPT by Hubert.io November 7, 2023 Tech Technology According to the data, South Africa has the fastest internet speeds in Africa. by Hubert.io October 31, 2023 Africa Politics The United States is set",
+    "ogImage": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo.png"
+  },
+  "baseURL": "https://thebrif.com",
+  "logo": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo.png",
+  "logo_light": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo-1.png",
+  "logoText": "theBrif",
+  "favicon": "/images/favicon.png",
+  "postPerPage": 6,
+  "homeTwoPostPerPage": 4,
+
+  "copyright": "© 2024 theBrif. All rights reserved.",
+
+  "socialLinks": [
+    {
+      "name": "Facebook",
+      "icon": "BsFacebook",
+      "link": "https://facebook.com/"
+    },
+    {
+      "name": "Twitter",
+      "icon": "BsTwitter",
+      "link": "https://twitter.com/"
+    },
+    {
+      "name": "Linkedin",
+      "icon": "BsLinkedin",
+      "link": "https://linkedin.com/"
+    },
+    {
+      "name": "Github",
+      "icon": "BsGithub",
+      "link": "https://github.com/"
+    }
+  ]
+}
