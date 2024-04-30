@@ -10,7 +10,7 @@ import Link from "next/link";
 import * as API from "@/libs/contentApi";
 import Loading from "@/components/Loading";
 
-export default function PostPage({ post }) {
+export default function PostPage({ post, relatedPosts }) {
   if (!post) {
     return <Loading />;
   }
@@ -136,7 +136,7 @@ export default function PostPage({ post }) {
                 <h2 className="h3 mb-0 title">Keep Reading</h2>
               </div>
               <div className="col-sm-5 text-end d-none d-sm-block">
-                <Link href="/blog/" className="text-link lead active">
+                <Link href="/articles/" className="text-link lead active">
                   All Posts
                   <ArrowUpRight />
                 </Link>
@@ -144,7 +144,7 @@ export default function PostPage({ post }) {
             </div>
 
             <div className="row gy-5 g-md-5">
-              {[].map((post, key) => (
+              {relatedPosts?.map((post, key) => (
                 <div key={key} className="col-lg-4 col-md-6">
                   <Post post={post} compact={true} status="Related" />
                 </div>
@@ -158,7 +158,7 @@ export default function PostPage({ post }) {
 
             <div className="d-block d-sm-none mt-5 pt-3">
               <div className="text-center">
-                <Link href="/blog/" className="text-link lead active">
+                <Link href="/articles/" className="text-link lead active">
                   All Posts
                   <ArrowUpRight />
                 </Link>
@@ -191,11 +191,12 @@ export const getStaticProps = async ({ params: { slug } }) => {
     };
   }
 
-  // const relatedPosts= await API.getRelatedPosts(post.categories, post.slug);
+  const relatedPosts = await API.getRelatedPosts(post.primary_tag.slug);
 
   return {
     props: {
       post,
+      relatedPosts,
     },
   };
 };

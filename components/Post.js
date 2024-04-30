@@ -3,7 +3,7 @@ import { formatDate } from "@/utils/formatDate";
 import { Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 
-const Post = ({ post, compact }) => {
+const Post = ({ post, compact, status: postStatus }) => {
   const {
     excerpt,
     feature_image,
@@ -14,11 +14,17 @@ const Post = ({ post, compact }) => {
     primary_author: author,
   } = post;
 
+  const status = postStatus
+    ? postStatus
+    : post.featured
+    ? "Featured"
+    : undefined;
+
   return (
     <article className="bg-white d-flex flex-column h-100">
       {!compact && (
         <div className="post-image">
-          <Link href={`/blog/${slug}`} className="d-block" title={title}>
+          <Link href={`/articles/${slug}`} className="d-block" title={title}>
             <BlurImage
               className="w-100 h-auto"
               src={feature_image}
@@ -29,8 +35,9 @@ const Post = ({ post, compact }) => {
           </Link>
         </div>
       )}
-      <div className={"p-4 pb-0"}>
-        <ul className={`post-meta list-inline mb-3`}>
+      <div className={`p-4 pb-0 ${status ? "position-relative" : ""}`}>
+        {status && <p className="post-badge mb-0">{status}</p>}
+        <ul className={`post-meta list-inline mb-3 ${status ? "mt-3" : ""}`}>
           <li className="list-inline-item">
             <Calender className="me-1 align-bottom" />
             {formatDate(published_at)}
@@ -44,7 +51,7 @@ const Post = ({ post, compact }) => {
         <div className="position-relative">
           <h3 className="h4 post-title mb-2 line-clamp clamp-2">
             <Link
-              href={`/blog/${slug}`}
+              href={`/articles/${slug}`}
               className="text-link stretched-link"
               title={title}
             >
@@ -59,7 +66,7 @@ const Post = ({ post, compact }) => {
 
       <div className="post-author mt-auto p-4 pt-3">
         <Link
-          href={`/author/${author.slug}`}
+          href={`/authors/${author.slug}`}
           className="is-hoverable"
           title={`Read all posts by - ${author.name}`}
         >
@@ -76,7 +83,7 @@ const Post = ({ post, compact }) => {
 
         <Link
           className="text-link ms-2 is-hoverable"
-          href={`/author/${author.slug}`}
+          href={`/authors/${author.slug}`}
           title={`Read all posts by - ${author.name}`}
         >
           {author.name}

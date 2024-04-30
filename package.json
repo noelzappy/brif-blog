@@ -20,6 +20,7 @@
     "gray-matter": "^4.0.3",
     "next": "13.4.10",
     "next-themes": "^0.2.1",
+    "nextjs-toploader": "^1.6.12",
     "parse-numeric-range": "^1.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

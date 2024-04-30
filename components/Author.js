@@ -65,7 +65,7 @@ const Author = ({
             <article className="h-100 position-relative">
               <h3 className="h5 mb-2 line-clamp clamp-2">
                 <Link
-                  href={`/blog/${post.slug}`}
+                  href={`/articles/${post.slug}`}
                   className="text-link stretched-link"
                   title={post.frontMatter.title}
                 >

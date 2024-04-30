@@ -7,7 +7,7 @@ import {
 } from "react-icons/bs";
 
 const SharePost = ({ title, slug }) => {
-  const pageUrl = `https://thebrif.com/blog/${slug}`;
+  const pageUrl = `https://thebrif.com/articles/${slug}`;
 
   return (
     <ul className="list-unstyled social-links social-share mt-4 mt-sm-0">

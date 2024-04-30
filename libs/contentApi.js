@@ -6,9 +6,11 @@ const api = new GhostContentAPI({
   version: "v5.82",
 });
 
-export const getPosts = async () => {
+export const getPosts = async (page = 1) => {
   return api.posts.browse({
-    include: "authors",
+    include: "authors,tags",
+    limit: 6,
+    page,
   });
 };
 
@@ -60,6 +62,19 @@ export const getSettings = async () => {
 
 export const getPages = async () => {
   return api.pages.browse();
+};
+
+export const getRelatedPosts = async (tag) => {
+  return api.posts.browse({
+    filter: `tags.slug:${tag}`,
+    include: "authors",
+    order: "published_at:desc",
+    limit: 3,
+  });
+};
+
+export const getTags = async () => {
+  return api.tags.browse();
 };
 
 export default api;
