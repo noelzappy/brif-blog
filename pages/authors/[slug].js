@@ -16,7 +16,7 @@ export default function AuthorSingle({ author, posts }) {
 
   return (
     <Layout
-      metaTitle={author.title}
+      metaTitle={author.name}
       metaDescription={author.bio}
       ogImage={author.profile_image}
     >

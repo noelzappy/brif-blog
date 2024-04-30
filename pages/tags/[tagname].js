@@ -42,8 +42,6 @@ export const getStaticProps = async ({ params: { tagname } }) => {
   const posts = await API.getPostsByTag(tagname);
   const tag = await API.getTag(tagname);
 
-  console.log("TAG: ", tag, tagname);
-
   if (!posts || !tag) {
     return {
       notFound: true,

@@ -10,7 +10,7 @@ import * as API from "@/libs/contentApi";
 
 const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
   return (
-    <Layout>
+    <Layout metaTitle={"Home"}>
       {/* Banner */}
       <section className="banner bg-white overflow-hidden">
         <div className="container">

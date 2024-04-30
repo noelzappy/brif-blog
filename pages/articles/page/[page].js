@@ -49,8 +49,6 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  console.log("PARAMS: ", params);
-
   const posts = await API.getPosts(
     params && params.page ? parseInt(params.page) : 1
   );

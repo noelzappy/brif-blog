@@ -11,6 +11,15 @@ const Layout = ({
   ogImage,
   children,
 }) => {
+  console.log(
+    "siteConfig",
+    metaTitle,
+    metaDescription,
+    metaAuthor,
+    metaKeyword,
+    ogImage
+  );
+
   return (
     <>
       <Head>
