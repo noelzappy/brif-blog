@@ -77,4 +77,23 @@ export const getTags = async () => {
   return api.tags.browse();
 };
 
+export const getPostsByTag = async (tag, page) => {
+  return api.posts.browse({
+    filter: `tags.slug:${tag}`,
+    include: "authors,tags",
+  });
+};
+
+export const getTag = async (tag) => {
+  return api.tags.read({
+    slug: tag,
+  });
+};
+
+export const getAuthor = async (slug) => {
+  return api.authors.read({
+    slug,
+  });
+};
+
 export default api;

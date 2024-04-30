@@ -1,28 +1,25 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import Post from "@/components/Post";
-import { getAuthors } from "@/libs/getAuthors";
-import { getPosts } from "@/libs/getPosts";
 import { capitalizeText } from "@/utils/capitalizeText";
-import { slugify } from "@/utils/slugify";
+import * as API from "@/libs/contentApi";
+import Loading from "@/components/Loading";
 
-const TagSingle = ({ authors, posts, tag }) => {
-  let flatPosts = posts.flat();
-  const getUniquePostsBy = (flatPosts, key) => {
-    return [...new Map(flatPosts.map((item) => [item[key], item])).values()];
-  };
-  const uniquePosts = getUniquePostsBy(flatPosts, "slug");
+const TagSingle = ({ posts, tag, tagname }) => {
+  if (!posts || !tag) {
+    return <Loading />;
+  }
 
   return (
-    <Layout metaTitle={`Showing posts from - ${capitalizeText(tag)}`}>
-      <PageHeader title={tag} taxonomy={true} />
+    <Layout metaTitle={`Showing posts from - ${capitalizeText(tag.name)}`}>
+      <PageHeader title={tagname} taxonomy={true} />
 
       <section className="section pt-0">
         <div className="container">
           <div className="row gy-5 gx-md-5">
-            {uniquePosts.map((post, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <Post post={post} authors={authors} />
+            {posts.map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} status={tagname} />
               </div>
             ))}
           </div>
@@ -35,34 +32,29 @@ const TagSingle = ({ authors, posts, tag }) => {
 export default TagSingle;
 
 export const getStaticPaths = async () => {
-  const allPost = getPosts();
-  const allTags = allPost.map((tag) => tag.frontMatter.tags);
-  const flatTags = allTags.flat();
-  const uniqueTags = [...new Set(flatTags)];
-
-  const paths = uniqueTags.map((tag) => ({
-    params: {
-      tagname: slugify(tag),
-    },
-  }));
-
   return {
-    paths,
-    fallback: false,
+    paths: [],
+    fallback: true,
   };
 };
 
 export const getStaticProps = async ({ params: { tagname } }) => {
-  const allPost = getPosts();
-  const filteredPostByTag = allPost.filter((post) =>
-    post.frontMatter.tags.map((tag) => slugify(tag)).includes(tagname)
-  );
+  const posts = await API.getPostsByTag(tagname);
+  const tag = await API.getTag(tagname);
+
+  console.log("TAG: ", tag, tagname);
+
+  if (!posts || !tag) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
-      authors: getAuthors(),
-      posts: filteredPostByTag,
-      tag: tagname,
+      posts,
+      tag,
+      tagname,
     },
   };
 };

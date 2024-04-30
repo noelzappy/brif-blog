@@ -108,12 +108,6 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
                   </div>
                 ))}
               </div>
-              <div className="text-center mt-5">
-                <Link href="/tags/" className="text-link lead active">
-                  <Markdown content="All Tags" inline={true} />
-                  <ArrowUpRight />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -242,7 +236,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
                 <h3 className="h2 post-title mb-4 position-relative">
                   <Link
                     className="text-white text-link stretched-link"
-                    href={`/blog/${post.slug}`}
+                    href={`/articles/${post.slug}`}
                   >
                     {post.title}
                   </Link>
