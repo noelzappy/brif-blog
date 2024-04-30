@@ -11,6 +11,8 @@ import * as API from "@/libs/contentApi";
 import Loading from "@/components/Loading";
 
 export default function PostPage({ post, relatedPosts }) {
+  useScript("/js/lightense.min.js", "body", true);
+
   if (!post) {
     return <Loading />;
   }
@@ -167,8 +169,6 @@ export default function PostPage({ post, relatedPosts }) {
           </div>
         </div>
       </section>
-
-      {useScript("/js/lightense.min.js", "body", true)}
     </Layout>
   );
 }
