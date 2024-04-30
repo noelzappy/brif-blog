@@ -4,8 +4,6 @@ import { Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 
 const Post = ({ post, compact }) => {
-  console.log("post", post);
-
   const {
     excerpt,
     feature_image,
