@@ -4,13 +4,13 @@ import Pagination from "@/components/Pagination";
 import Post from "@/components/Post";
 import Markdown from "@/components/ReactMarkdown";
 import { formatDate } from "@/utils/formatDate";
-import { ArrowUpRight, Calender, Clock, EditCircle } from "@/utils/Icons";
+import { ArrowRight, ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
 
-const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
+const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
   return (
-    <Layout>
+    <Layout metaTitle={"Home"}>
       {/* Banner */}
       <section className="banner bg-white overflow-hidden">
         <div className="container">
@@ -42,7 +42,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/featured/" className="text-link lead active">
+              <Link href="/articles/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -66,42 +66,40 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
               <Post post={featuredPosts[3]} />
             </div>
           </div>
-          <div className="d-block d-sm-none mt-5 pt-3">
+          {/*          <div className="d-block d-sm-none mt-5 pt-3">
             <div className="text-center">
               <Link href="/featured/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
-          </div>
+  </div> */}
         </div>
       </section>
 
       {/* All Categories */}
-      {/*      <section className="section bg-white">
+      <section className="section bg-white">
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
               <div className="section-title text-center">
                 <h2 className="h3 mb-2 title">
-                  <Markdown content={allCategories.title} inline={true} />
+                  <Markdown content="Tags" inline={true} />
                 </h2>
                 <p className="mb-0">
-                  <Markdown content={allCategories.subtitle} inline={true} />
+                  <Markdown content="Popular Tags" inline={true} />
                 </p>
               </div>
 
               <div className="row row g-3 taxonomy-lists">
-                {uniqueCategory.slice(0, 9).map((item, i) => (
-                  <div className="col-md-4 col-6" key={i}>
+                {tags.slice(0, 9).map((item, i) => (
+                  <div className="col-md-4 col-6" key={item.id}>
                     <Link
-                      href={`/categories/${slugify(item.value)}`}
+                      href={`/tags/${item.slug}`}
                       className="bg-body text-dark px-3 py-2 d-flex lead"
                     >
                       <div className="flex-grow-1">
-                        <span className="text-black">
-                          {item.value} <small>({item.count})</small>
-                        </span>
+                        <span className="text-black">{item.name}</span>
                       </div>
                       <div className="flex-shrink-0 ms-2 icon">
                         <ArrowRight className="opacity-25 small" size={20} />
@@ -110,16 +108,10 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
                   </div>
                 ))}
               </div>
-              <div className="text-center mt-5">
-                <Link href="/categories/" className="text-link lead active">
-                  <Markdown content="All Categories" inline={true} />
-                  <ArrowUpRight />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Recent Posts */}
       <section className="section">
@@ -131,7 +123,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/blog/" className="text-link lead active">
+              <Link href="/articles/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -161,7 +153,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
               </h2>
             </div>
             <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/author/" className="text-link lead active">
+              <Link href="/authors/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -171,13 +163,13 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
             {authors.map((author) => (
               <div className="col-lg-4 col-md-6" key={author.id}>
                 <Link
-                  href={`/author/${author.slug}`}
+                  href={`/authors/${author.slug}`}
                   className="bg-body text-dark p-3 d-flex is-hoverable"
                   title={author.name}
                 >
                   <div className="flex-shrink-0 me-3">
                     <BlurImage
-                      className="shadow img-fluid"
+                      className="shadow img-fluid rounded-1"
                       src={author.profile_image}
                       alt={author.name}
                       width={90}
@@ -194,10 +186,6 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
                           {author.name}
                         </p>
                       </div>
-                      <p className="fw-medium mt-auto mb-0 small">
-                        <EditCircle className="me-2" />
-                        <span className="text-black">12</span> Published posts
-                      </p>
                     </div>
                   </div>
                 </Link>
@@ -206,7 +194,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
           </div>
           <div className="d-block d-sm-none mt-5 pt-3">
             <div className="text-center">
-              <Link href="/author/" className="text-link lead active">
+              <Link href="/authors/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
@@ -248,7 +236,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
                 <h3 className="h2 post-title mb-4 position-relative">
                   <Link
                     className="text-white text-link stretched-link"
-                    href={`/blog/${post.slug}`}
+                    href={`/articles/${post.slug}`}
                   >
                     {post.title}
                   </Link>
@@ -256,7 +244,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
 
                 <div className="post-author">
                   <Link
-                    href={`/author/${post.primary_author.slug}`}
+                    href={`/authors/${post.primary_author.slug}`}
                     className="is-hoverable"
                     title={`Read all posts by - ${post.primary_author.name}`}
                   >
@@ -271,7 +259,7 @@ const Home = ({ featuredPosts, recentPosts, authors, settings }) => {
                   <span className="text-light me-1">by </span>
                   <Link
                     className="text-link text-white"
-                    href={`/author/${post.primary_author.slug}`}
+                    href={`/authors/${post.primary_author.slug}`}
                     title={`Read all posts by - ${post.primary_author.name}`}
                   >
                     {post.primary_author.name}
@@ -293,13 +281,14 @@ export const getStaticProps = async () => {
   const recentPosts = await API.getRecentPosts();
   const authors = await API.getAuthors();
   const settings = await API.getSettings();
+  const tags = await API.getTags();
 
   return {
     props: {
       featuredPosts,
       recentPosts,
       authors,
-      settings,
+      tags,
     },
   };
 };

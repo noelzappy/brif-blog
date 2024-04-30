@@ -7,6 +7,7 @@ import "@/styles/style.scss";
 import { ThemeProvider } from "next-themes";
 import { DM_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
+import NextTopLoader from "nextjs-toploader";
 
 const dm_sans = DM_Sans({
   weight: ["400", "500"],
@@ -25,6 +26,7 @@ export default function TushiApp({ Component, pageProps }) {
     <AppContext.Provider value={{ toggleSearch: [searchOpen, setSearchOpen] }}>
       <ThemeProvider defaultTheme="light" attribute="class">
         <main className={`${dm_sans.className} d-flex flex-column bg-body`}>
+          <NextTopLoader />
           <Header />
 
           <section className="mb-auto">

@@ -1,3 +1,5 @@
+"use client";
+
 import Breadcrumb from "@/components/Breadcrumb";
 import BreadcrumbItem from "@/components/BreadcrumbItem";
 import { capitalizeText } from "@/utils/capitalizeText";

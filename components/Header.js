@@ -1,3 +1,5 @@
+"use client"
+
 import Search from "@/components/Search";
 import { AppContext } from "@/components/UseContext";
 import Menu from "@/config/menus.json";

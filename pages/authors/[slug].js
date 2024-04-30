@@ -3,35 +3,38 @@ import BootstrapIcon from "@/components/BootstrapIcon";
 import Layout from "@/components/Layout";
 import Post from "@/components/Post";
 import Markdown from "@/components/ReactMarkdown";
-import { getAuthors } from "@/libs/getAuthors";
-import { getPosts } from "@/libs/getPosts";
 import { EditCircle } from "@/utils/Icons";
-import { slugify } from "@/utils/slugify";
+import * as API from "@/libs/contentApi";
+import Loading from "@/components/Loading";
 
-export default function AuthorSingle({
-  author: { authorContent, authorFrontMatter },
-  posts,
-}) {
-  const { title, subtitle, image, socialLinks } = authorFrontMatter;
+export default function AuthorSingle({ author, posts }) {
+  if (!author || !posts) {
+    return <Loading />;
+  }
+
   const postCount = posts.length;
 
   return (
-    <Layout>
+    <Layout
+      metaTitle={author.name}
+      metaDescription={author.bio}
+      ogImage={author.profile_image}
+    >
       <section className="section">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-9 col-lg-10 text-center">
               <div className="mb-5">
                 <BlurImage
-                  className="img-fluid"
-                  src={image}
-                  alt={title}
+                  className="img-fluid rounded-1"
+                  src={author.profile_image}
+                  alt={author.name}
                   width={180}
                   height={180}
                 />
               </div>
-              <h1 className="h2 text-dark mb-1">{title}</h1>
-              <p>{subtitle}</p>
+              <h1 className="h2 text-dark mb-1">{author.name}</h1>
+              <p>{author.location}</p>
               <p className="mb-3">
                 <EditCircle />
                 <span className="fw-medium text-black ms-1">
@@ -40,9 +43,9 @@ export default function AuthorSingle({
                 Published posts
               </p>
               <div className="content">
-                <Markdown content={authorContent} />
+                <Markdown content={author.bio} />
               </div>
-              <ul className="list-inline social-links mt-4">
+              {/*         <ul className="list-inline social-links mt-4">
                 {socialLinks.map((data, key) => (
                   <li
                     key={key}
@@ -58,7 +61,7 @@ export default function AuthorSingle({
                     </a>
                   </li>
                 ))}
-              </ul>
+              </ul> */}
               <div className="section">
                 <div className="border-top"></div>
               </div>
@@ -68,14 +71,14 @@ export default function AuthorSingle({
             <div className="col-12">
               <div className="section-title mb-3 text-center">
                 <p className="mb-2">Posts of</p>
-                <h2 className="h3 mb-0 title">{title}</h2>
+                <h2 className="h3 mb-0 title">{author.name}</h2>
               </div>
             </div>
           </div>
           <div className="row gy-5 gx-md-5 justify-content-center">
             {posts.map((post, key) => (
               <div key={key} className="col-lg-4 col-md-6">
-                <Post post={post} authors="current" />
+                <Post post={post} />
               </div>
             ))}
           </div>
@@ -86,35 +89,21 @@ export default function AuthorSingle({
 }
 
 export const getStaticPaths = async () => {
-  const allAuthors = getAuthors();
-  const paths = allAuthors.map((author) => ({
-    params: {
-      author_name: author.authorSlug,
-    },
-  }));
-
   return {
-    paths,
-    fallback: false,
+    paths: [],
+    fallback: true,
   };
 };
 
-export const getStaticProps = async ({ params: { author_name } }) => {
-  const allPosts = getPosts();
-  const postByCurrentAuthor = allPosts.filter(
-    (post) => slugify(post.frontMatter.author) == author_name
-  );
+export const getStaticProps = async ({ params: { slug } }) => {
+  const posts = await API.getPostsByAuthor(slug);
 
-  const allAuthors = getAuthors();
-  const currentAuthor = allAuthors.filter(
-    (author) => author.authorSlug == author_name
-  );
+  const author = await API.getAuthor(slug);
 
   return {
     props: {
-      posts: postByCurrentAuthor,
-      authors: allAuthors,
-      author: currentAuthor[0],
+      posts,
+      author,
     },
   };
 };

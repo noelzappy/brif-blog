@@ -4,13 +4,10 @@
       "name": "Home",
       "link": "/"
     },
+
     {
-      "name": "Featured",
-      "link": "/featured"
-    },
-    {
-      "name": "Latest",
-      "link": "/blog"
+      "name": "Articles",
+      "link": "/articles"
     },
     {
       "name": "About",

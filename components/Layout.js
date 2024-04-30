@@ -1,3 +1,5 @@
+"use client";
+
 import siteConfig from "@/config/site.config.json";
 import Head from "next/head";
 
@@ -9,6 +11,15 @@ const Layout = ({
   ogImage,
   children,
 }) => {
+  console.log(
+    "siteConfig",
+    metaTitle,
+    metaDescription,
+    metaAuthor,
+    metaKeyword,
+    ogImage
+  );
+
   return (
     <>
       <Head>
@@ -17,7 +28,7 @@ const Layout = ({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
-        <title>{metaTitle}</title>
+        <title>{metaTitle} | theBrif</title>
 
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
         <meta name="keyword" content={metaKeyword} />

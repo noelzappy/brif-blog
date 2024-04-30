@@ -1,4 +1,6 @@
 export const formatDate = (a) => {
+  if (!a) return null;
+
   const longEnUSFormatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "short",

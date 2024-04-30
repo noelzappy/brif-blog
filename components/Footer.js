@@ -6,7 +6,7 @@ import { ArrowUpRight } from "@/utils/Icons";
 import Link from "next/link";
 
 const Footer = () => {
-  const { copyright, socialLinks } = siteConfig;
+  const { socialLinks } = siteConfig;
 
   return (
     <footer className="bg-white">
@@ -98,7 +98,9 @@ const Footer = () => {
         <div className="container">
           <div className="row gy-3 align-items-center">
             <div className="col-lg-4 order-2 order-lg-1 text-center text-lg-start">
-              <p className="mb-0 copyright-text">{copyright}</p>
+              <p className="mb-0 copyright-text">
+                © {new Date().getFullYear()} theBrif. All rights reserved.
+              </p>
             </div>
             <div className="col-lg-4 text-center order-1">
               <ul className="list-unstyled">

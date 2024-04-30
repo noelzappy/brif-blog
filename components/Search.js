@@ -1,3 +1,5 @@
+"use client";
+
 import BlurImage from "@/components/BlurImage";
 import { AppContext } from "@/components/UseContext";
 import { formatDate } from "@/utils/formatDate";
@@ -106,7 +108,7 @@ const Search = () => {
                   className="col-6 col-sm-4"
                   onClick={() => resetSearchInput(true)}
                 >
-                  <Link href={`/blog/${r.slug}`}>
+                  <Link href={`/articles/${r.slug}`}>
                     <BlurImage
                       className="mw-100 h-auto"
                       src={r.frontMatter.image}
@@ -212,7 +214,7 @@ const Search = () => {
 
                       <Link
                         className="fs-lg lh-base text-dark text-link stretched-link"
-                        href={`/blog/${post.slug}`}
+                        href={`/articles/${post.slug}`}
                       >
                         {post.frontMatter.title}
                       </Link>

@@ -13,7 +13,7 @@ const Pagination = ({ currentPage, numberOfPages }) => {
         }`}
       >
         <Link
-          href={`/blog/page/${currentPage - 1}`}
+          href={`/articles/page/${currentPage - 1}`}
           className="page-link page-link-previous bg-transparent rounded-0 px-0 border-0 text-dark text-link text-uppercase fw-medium"
           aria-label="Pagination Arrow"
         >
@@ -33,7 +33,7 @@ const Pagination = ({ currentPage, numberOfPages }) => {
         }`}
       >
         <Link
-          href={`/blog/page/${currentPage + 1}`}
+          href={`/articles/page/${currentPage + 1}`}
           className="page-link bg-transparent rounded-0 px-0 border-0 text-dark text-link active text-uppercase fw-medium"
           aria-label="Pagination Arrow"
         >

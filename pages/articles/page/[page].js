@@ -1,10 +1,17 @@
 import Layout from "@/components/Layout";
+import Loading from "@/components/Loading";
 import PageHeader from "@/components/PageHeader";
 import Pagination from "@/components/Pagination";
 import Post from "@/components/Post";
 import * as API from "@/libs/contentApi";
 
-const Blog = ({ posts }) => {
+const Articles = ({ posts, meta }) => {
+  if (!posts) {
+    return <Loading />;
+  }
+
+  const { pagination } = meta;
+
   return (
     <Layout metaTitle="Latest Posts">
       <PageHeader title="Latest Posts" truncateBreadcrumb={true} />
@@ -18,16 +25,21 @@ const Blog = ({ posts }) => {
               </div>
             ))}
 
-            <div className="col-12 text-center pt-4 mt-5">
-              <Pagination currentPage={1} numberOfPages={2} />
-            </div>
+            {pagination ? (
+              <div className="col-12 text-center pt-4 mt-5">
+                <Pagination
+                  currentPage={pagination?.page}
+                  numberOfPages={pagination?.pages}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
     </Layout>
   );
 };
-export default Blog;
+export default Articles;
 
 export const getStaticPaths = async () => {
   return {
@@ -37,11 +49,20 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const allPosts = await API.getPosts();
+  const posts = await API.getPosts(
+    params && params.page ? parseInt(params.page) : 1
+  );
+
+  if (!posts) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
-      posts: allPosts,
+      posts: posts,
+      meta: posts.meta,
     },
   };
 };
