@@ -1,8 +1,8 @@
 import GhostContentAPI from "@tryghost/content-api";
 
 const api = new GhostContentAPI({
-  url: "http://localhost:2368",
-  key: "6e9ccf9089db962c0c9903f7df",
+  url: "https://panel.thebrif.com",
+  key: "01cbf2d8097444e338131099e5",
   version: "v5.82",
 });
 
@@ -97,3 +97,14 @@ export const getAuthor = async (slug) => {
 };
 
 export default api;
+
+const dd = {
+  service: "Mailgun",
+  host: "smtp.mailgun.org",
+  secure: true,
+  port: 587,
+  auth: {
+    user: "postmaster@mg.thebrif.com",
+    pass: "3b0f62ea60358b5a5025376e4502fa75-86220e6a-708aefe9",
+  },
+};
