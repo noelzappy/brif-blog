@@ -1,3 +1,5 @@
+"use client";
+
 import BlurImage from "@/components/BlurImage";
 import { AppContext } from "@/components/UseContext";
 import { formatDate } from "@/utils/formatDate";

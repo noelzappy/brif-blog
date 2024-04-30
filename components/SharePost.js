@@ -6,7 +6,9 @@ import {
   BsTwitter,
 } from "react-icons/bs";
 
-const SharePost = ({ title, pageUrl }) => {
+const SharePost = ({ title, slug }) => {
+  const pageUrl = `https://thebrif.com/blog/${slug}`;
+
   return (
     <ul className="list-unstyled social-links social-share mt-4 mt-sm-0">
       <li className="d-block mb-2">Share:</li>

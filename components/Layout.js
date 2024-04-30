@@ -1,3 +1,5 @@
+"use client";
+
 import siteConfig from "@/config/site.config.json";
 import Head from "next/head";
 

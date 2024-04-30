@@ -3,39 +3,24 @@ import Layout from "@/components/Layout";
 import Post from "@/components/Post";
 import MarkdownSyntaxHighlighter from "@/components/ReactMarkdownSyntaxHighlighter";
 import SharePost from "@/components/SharePost";
-import siteConfig from "@/config/site.config.json";
-import { getAuthors } from "@/libs/getAuthors";
-import { getPosts } from "@/libs/getPosts";
-import { getRelatedPosts } from "@/libs/getRelatedPosts";
 import { useScript } from "@/libs/useScript";
 import { ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import { formatDate } from "@/utils/formatDate";
-import { readingTime } from "@/utils/readingTime";
-import { slugify } from "@/utils/slugify";
 import Link from "next/link";
+import * as API from "@/libs/contentApi";
+import Loading from "@/components/Loading";
 
-export default function PostPage({
-  allPosts,
-  allAuthors,
-  authorImage,
-  currentPost: { slug, frontMatter, content },
-}) {
-  // Get Page Url
-  const pageUrl = `${siteConfig.baseURL.replace(/\/$|$/, "/")}blog/${slug}`;
-
-  const { title, author, date, image, description, tags, categories } =
-    frontMatter;
-
-  // Get first 3 related posts
-  let relatedPosts = getRelatedPosts(allPosts, slug, tags, categories);
-
-  // If Related posts are less then 3
-  const recentPosts = allPosts
-    .filter((post) => post.slug !== slug)
-    .slice(0, 3 - relatedPosts.length);
+export default function PostPage({ post }) {
+  if (!post) {
+    return <Loading />;
+  }
 
   return (
-    <Layout metaTitle={title} metaDescription={description} ogImage={image}>
+    <Layout
+      metaTitle={post.title}
+      metaDescription={post.excerpt}
+      ogImage={post.feature_image}
+    >
       <section className="bg-body">
         <div className="container">
           <div className="row justify-content-center">
@@ -48,44 +33,44 @@ export default function PostPage({
                   >
                     <Clock className="me-2" />
                   </span>
-                  {readingTime(content)} min reading in
-                  <span className="mx-2">—</span>
-                  {categories.map((category, i) => (
+                  {post.reading_time} min reading
+                  {/* post.tags.map((tag, i) => (
+                    <span className="mx-2">—</span>
                     <Link
-                      key={i}
+                      key={tag.id}
                       className="text-link"
-                      href={`/categories/${slugify(category)}`}
+                      href={`/tags/${tag.slug}`}
                     >
-                      {category}
+                      {tag.name}
                     </Link>
-                  ))}
+                  )) */}
                 </p>
 
-                <h1 className="h2 mb-3">{title}</h1>
-                <p className="mb-4 pb-1">{description}</p>
+                <h1 className="h2 mb-3">{post.title}</h1>
+                <p className="mb-4 pb-1">{post.excerpt}...</p>
 
                 <div className="post-author d-flex flex-wrap align-items-center">
                   <p className="mb-0 me-3 lh-base">
                     <Link
-                      href={`/author/${slugify(author)}`}
+                      href={`/author/${post.primary_author.slug}`}
                       className="is-hoverable"
-                      title={`Read all posts by - ${author}`}
+                      title={`Read all posts by - ${post.primary_author.name}`}
                     >
                       <BlurImage
-                        src={authorImage}
-                        alt={author}
-                        className="w-auto"
-                        width="26"
-                        height="26"
+                        src={post.primary_author.profile_image}
+                        alt={post.primary_author.name}
+                        className="rounded-circle"
+                        width={26}
+                        height={26}
                       />
                     </Link>
                     <span className="ms-3 me-2">by</span>
                     <Link
                       className="text-link"
-                      href={`/author/${slugify(author)}`}
-                      title={`Read all posts by - ${author}`}
+                      href={`/author/${post.primary_author.slug}`}
+                      title={`Read all posts by - ${post.primary_author.name}`}
                     >
-                      {author}
+                      {post.primary_author.name}
                     </Link>
                   </p>
                   <span className="me-3">—</span>
@@ -96,18 +81,18 @@ export default function PostPage({
                     >
                       <Calender className="me-2" />
                     </span>
-                    Published at {formatDate(date)}
+                    Published at {formatDate(post.published_at)}
                   </p>
                 </div>
               </div>
             </div>
 
-            {image && (
+            {post.feature_image && (
               <div className="col-lg-12">
                 <BlurImage
-                  className="w-100 h-auto"
-                  src={image}
-                  alt={title}
+                  className="w-100 h-auto rounded-3"
+                  src={post.feature_image}
+                  alt={post.title}
                   width={`1020`}
                   height={`660`}
                 />
@@ -115,28 +100,29 @@ export default function PostPage({
             )}
 
             <div className="col-xl-9 col-lg-10">
-              <div className={`section ${image == null ? "pt-0" : ""}`}>
+              <div
+                className={`section ${
+                  post.feature_image == null ? "pt-0" : ""
+                }`}
+              >
                 <div className="content">
-                  <MarkdownSyntaxHighlighter content={content} />
+                  <MarkdownSyntaxHighlighter content={post.html} />
                 </div>
 
                 <div className="d-block d-sm-flex justify-content-between align-items-center mt-5 pt-3">
                   <ul className="taxonomy-lists list-inline">
                     <li className="list-inline-item d-block mb-3">Tags: </li>
-                    {tags.map((tag, i) => (
-                      <li key={i} className="list-inline-item">
-                        <Link
-                          href={`/tags/${slugify(tag)}`}
-                          className="bg-white"
-                        >
+                    {post.tags.map((tag, i) => (
+                      <li key={tag.id} className="list-inline-item">
+                        <Link href={`/tags/${tag.slug}`} className="bg-white">
                           <span className="small me-1">#</span>
-                          {tag}
+                          {tag.name}
                         </Link>
                       </li>
                     ))}
                   </ul>
 
-                  <SharePost title={title} pageUrl={pageUrl} />
+                  <SharePost title={post.title} pageUrl={post.slug} />
                 </div>
               </div>
 
@@ -158,24 +144,14 @@ export default function PostPage({
             </div>
 
             <div className="row gy-5 g-md-5">
-              {relatedPosts.map((post, key) => (
+              {[].map((post, key) => (
                 <div key={key} className="col-lg-4 col-md-6">
-                  <Post
-                    post={post}
-                    authors={allAuthors}
-                    compact={true}
-                    status="Related"
-                  />
+                  <Post post={post} compact={true} status="Related" />
                 </div>
               ))}
-              {recentPosts.map((post, key) => (
+              {[].map((post, key) => (
                 <div key={key} className="col-lg-4 col-md-6">
-                  <Post
-                    post={post}
-                    authors={allAuthors}
-                    compact={true}
-                    status="New"
-                  />
+                  <Post post={post} compact={true} status="New" />
                 </div>
               ))}
             </div>
@@ -197,35 +173,29 @@ export default function PostPage({
   );
 }
 
-export const getStaticPaths = async () => {
-  const allPosts = getPosts();
-  const paths = allPosts.map((post) => ({
-    params: {
-      slug: post.slug,
-    },
-  }));
+export const dynamicParams = true;
 
+export const getStaticPaths = async () => {
   return {
-    paths,
-    fallback: false,
+    paths: [],
+    fallback: true,
   };
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  const allPosts = getPosts();
-  const currentPost = allPosts.filter((post) => post.slug == slug);
+  const post = await API.getSinglePost(slug);
 
-  const allAuthors = getAuthors();
-  const authorOfCurrentPost = allAuthors.filter(
-    (author) => slugify(currentPost[0].frontMatter.author) == author.authorSlug
-  );
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // const relatedPosts= await API.getRelatedPosts(post.categories, post.slug);
 
   return {
     props: {
-      currentPost: currentPost[0],
-      authorImage: authorOfCurrentPost[0].authorFrontMatter.image,
-      allPosts: allPosts,
-      allAuthors: allAuthors,
+      post,
     },
   };
 };
