@@ -15,14 +15,14 @@ const Contact = ({}) => {
     e.preventDefault();
     setLoading(true);
 
-    fetch("/submit-form", {
+    fetch("/api/submit-form", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         _subject: "New Contact Form Submission",
-        // email: email_address.value,
-        // name: full_name.value,
-        // message: message.value,
+        email: email_address.value,
+        name: full_name.value,
+        message: message.value,
       }),
     })
       .then((response) => response.json())

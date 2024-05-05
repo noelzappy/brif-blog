@@ -6,7 +6,24 @@ export default (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  console.log(req.body);
+  const API_KEY = process.env.NEXT_PUBLIC_MAILGUN_API_KEY;
 
-  res.status(200).json(JSON.stringify(posts));
+  // console.log(req.body, API_KEY);
+
+  // const body = {
+  //   from: "info@brifhq.com",
+
+  // }
+
+  // fetch("https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages", {
+  //   method: "POST",
+  //   headers: {
+  //     Authorization: "Basic " + API_KEY,
+  //   },
+  //   body: form,
+  // });
+
+  res.status(200).json({
+    success: true,
+  });
 };
