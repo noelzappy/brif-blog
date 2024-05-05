@@ -10,7 +10,6 @@ import * as API from "@/libs/contentApi";
 import Loading from "@/components/Loading";
 import { useCallback, useEffect } from "react";
 import useSubscribeDialog from "hooks/useSubscribeDialog";
-import Modal from "@/components/Modal";
 
 export default function PostPage({ post, relatedPosts }) {
   const { open, setOpen, doNotShowAgain, setDoNotShowAgain } =
