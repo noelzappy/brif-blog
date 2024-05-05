@@ -8,8 +8,31 @@ import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
 import Loading from "@/components/Loading";
+import { useCallback, useEffect } from "react";
+import useSubscribeDialog from "hooks/useSubscribeDialog";
+import Modal from "@/components/Modal";
 
 export default function PostPage({ post, relatedPosts }) {
+  const { open, setOpen, doNotShowAgain, setDoNotShowAgain } =
+    useSubscribeDialog();
+
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > window.innerHeight * 0.25) {
+      console.log("Hello");
+      if (doNotShowAgain) {
+        return;
+      }
+
+      // TODO: Implement subscribe dialog
+      setOpen(true);
+    }
+  }, [doNotShowAgain, setOpen]);
+
+  useEffect(() => {
+    if (!window) return;
+    window.addEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   if (!post) {
     return <Loading />;
   }

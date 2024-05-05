@@ -8,7 +8,7 @@ import { ArrowRight, ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
 
-const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
+const Home = ({ featuredPosts, recentPosts, authors, tags, meta }) => {
   return (
     <Layout metaTitle={"Home"}>
       {/* Banner */}
@@ -33,40 +33,41 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
       </section>
 
       {/* Featured Posts */}
-      <section className="featured-posts section">
-        <div className="container">
-          <div className="row align-items-center section-title">
-            <div className="col-sm-7">
-              <h2 className="h3 mb-0 title">
-                <Markdown content="Featured Posts" inline={true} />
-              </h2>
-            </div>
-            <div className="col-sm-5 text-end d-none d-sm-block">
-              <Link href="/articles/" className="text-link lead active">
-                <Markdown content="View All" inline={true} />
-                <ArrowUpRight />
-              </Link>
-            </div>
-          </div>
-          <div className="row gy-5 gx-md-5">
-            <div className="col-lg-4 col-md-6 order-0">
-              <Post post={featuredPosts[0]} />
-            </div>
-            <div className="col-lg-4 col-md-12 order-2 order-lg-1">
-              <div className="row gx-0 gx-md-5 gx-lg-0 gy-5">
-                <div className="col-lg-12 col-md-6">
-                  <Post post={featuredPosts[1]} compact={true} />
-                </div>
-                <div className="col-lg-12 col-md-6">
-                  <Post post={featuredPosts[2]} compact={true} />
-                </div>
+      {featuredPosts && featuredPosts.length > 3 && (
+        <section className="featured-posts section">
+          <div className="container">
+            <div className="row align-items-center section-title">
+              <div className="col-sm-7">
+                <h2 className="h3 mb-0 title">
+                  <Markdown content="Featured Posts" inline={true} />
+                </h2>
+              </div>
+              <div className="col-sm-5 text-end d-none d-sm-block">
+                <Link href="/articles/" className="text-link lead active">
+                  <Markdown content="View All" inline={true} />
+                  <ArrowUpRight />
+                </Link>
               </div>
             </div>
-            <div className="col-lg-4 col-md-6 order-1 order-lg-2">
-              <Post post={featuredPosts[3]} />
+            <div className="row gy-5 gx-md-5">
+              <div className="col-lg-4 col-md-6 order-0">
+                <Post post={featuredPosts[0]} />
+              </div>
+              <div className="col-lg-4 col-md-12 order-2 order-lg-1">
+                <div className="row gx-0 gx-md-5 gx-lg-0 gy-5">
+                  <div className="col-lg-12 col-md-6">
+                    <Post post={featuredPosts[1]} compact={true} />
+                  </div>
+                  <div className="col-lg-12 col-md-6">
+                    <Post post={featuredPosts[2]} compact={true} />
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6 order-1 order-lg-2">
+                <Post post={featuredPosts[3]} />
+              </div>
             </div>
-          </div>
-          {/*          <div className="d-block d-sm-none mt-5 pt-3">
+            {/*          <div className="d-block d-sm-none mt-5 pt-3">
             <div className="text-center">
               <Link href="/featured/" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
@@ -74,9 +75,9 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
               </Link>
             </div>
   </div> */}
-        </div>
-      </section>
-
+          </div>
+        </section>
+      )}
       {/* All Categories */}
       <section className="section bg-white">
         <div className="container">
@@ -92,7 +93,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
               </div>
 
               <div className="row row g-3 taxonomy-lists">
-                {tags.slice(0, 9).map((item, i) => (
+                {tags?.slice(0, 9).map((item, i) => (
                   <div className="col-md-4 col-6" key={item.id}>
                     <Link
                       href={`/tags/${item.slug}`}
@@ -130,15 +131,20 @@ const Home = ({ featuredPosts, recentPosts, authors, tags }) => {
             </div>
           </div>
           <div className="row gy-5 gx-md-5">
-            {recentPosts.slice(0, 6).map((post) => (
+            {recentPosts?.slice(0, 6).map((post) => (
               <div key={post.id} className="col-lg-4 col-md-6">
                 <Post post={post} />
               </div>
             ))}
 
-            <div className="col-12 text-center pt-4 mt-5">
-              <Pagination currentPage={1} numberOfPages={4} />
-            </div>
+            {recentPosts && recentPosts.length && (
+              <div className="col-12 text-center pt-4 mt-5">
+                <Pagination
+                  currentPage={meta?.pagination?.page}
+                  numberOfPages={meta?.pagination?.pages}
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -289,6 +295,7 @@ export const getStaticProps = async () => {
       recentPosts,
       authors,
       tags,
+      meta: recentPosts.meta,
     },
   };
 };
