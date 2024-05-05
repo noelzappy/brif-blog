@@ -1,8 +1,8 @@
 import GhostContentAPI from "@tryghost/content-api";
 
 const api = new GhostContentAPI({
-  url: "https://web.thebrif.com",
-  key: "7675fc133425d39d1454702753",
+  url: "https://panel.brifhq.com",
+  key: "1151a00fd722b07dd0b8d4d8a9",
   version: "v5.82",
 });
 
