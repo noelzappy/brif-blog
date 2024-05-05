@@ -1,10 +1,10 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import Markdown from "@/components/ReactMarkdown";
-import { getSinglePage } from "@/libs/getSinglePage";
 
-const TermsOfService = ({ terms }) => {
-  const { title, description } = terms.frontMatter;
+const TermsOfService = ({}) => {
+  const title = "Terms of Service";
+  const description = "Terms of Service";
 
   return (
     <Layout metaTitle={title} description={description}>
@@ -15,7 +15,7 @@ const TermsOfService = ({ terms }) => {
           <div className="row justify-content-center">
             <div className="col-xl-9 col-lg-10">
               <div className="content">
-                <Markdown content={terms.content} />
+                <Markdown content="To Be Done" />
               </div>
             </div>
           </div>
@@ -30,8 +30,6 @@ export default TermsOfService;
 // Export Props
 export const getStaticProps = () => {
   return {
-    props: {
-      terms: getSinglePage("content/terms-of-service.md"),
-    },
+    props: {},
   };
 };

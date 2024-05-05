@@ -1,30 +1,28 @@
 import Layout from "@/components/Layout";
 import Markdown from "@/components/ReactMarkdown";
-import { getSinglePage } from "@/libs/getSinglePage";
 import { Email, Loader, Phone, Send } from "@/utils/Icons";
 import { useState } from "react";
 
-const Contact = ({ contactPage }) => {
-  const { title, image, description, contact } = contactPage.frontMatter;
-  const { email, mailSubject, successMessage, errorMessage } =
-    contact.contactForm;
+const Contact = ({}) => {
+  const title = "Contact Us";
+  const description = "Contact Us";
 
   // Handler Form Submit
   const [submitted, setSubmitted] = useState("");
   const [loading, setLoading] = useState(false);
-  const formsubmitURL = `https://formsubmit.co/ajax/${email}`;
 
   const formHandler = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch(formsubmitURL, {
+
+    fetch("/submit-form", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _subject: mailSubject,
-        email: email_address.value,
-        name: full_name.value,
-        message: message.value,
+        _subject: "New Contact Form Submission",
+        // email: email_address.value,
+        // name: full_name.value,
+        // message: message.value,
       }),
     })
       .then((response) => response.json())
@@ -40,13 +38,13 @@ const Contact = ({ contactPage }) => {
   };
 
   return (
-    <Layout metaTitle={title} description={description} ogImage={image}>
+    <Layout metaTitle={title} description={description}>
       <section className="section">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-9 col-lg-10">
               <div className="section-title">
-                <h1 className="h3 mb-0 title">{title}</h1>
+                <h1 className="h3 mb-0 title">Contact us</h1>
               </div>
               <div className="row gy-5 gx-lg-5">
                 <div className="col-lg-6 order-1 order-lg-0">
@@ -59,7 +57,7 @@ const Contact = ({ contactPage }) => {
                       <input
                         type="hidden"
                         name="_subject"
-                        value={mailSubject}
+                        value="New Contact Form Submission"
                       />
                       <input
                         type="email"
@@ -93,14 +91,24 @@ const Contact = ({ contactPage }) => {
                     {submitted == "success" && (
                       <div className="col-12">
                         <p className="mb-0 form-success">
-                          <Markdown content={successMessage} inline={true} />
+                          <Markdown
+                            content={
+                              "Thank you for contacting us. We'll get back to you soon."
+                            }
+                            inline={true}
+                          />
                         </p>
                       </div>
                     )}
                     {submitted == "error" && (
                       <div className="col-12">
                         <p className="mb-0 form-error">
-                          <Markdown content={errorMessage} inline={true} />
+                          <Markdown
+                            content={
+                              "An error occurred while submitting the form. Please try again later."
+                            }
+                            inline={true}
+                          />
                         </p>
                       </div>
                     )}
@@ -126,23 +134,23 @@ const Contact = ({ contactPage }) => {
                 <div className="col-lg-6 order-0 order-lg-1">
                   <div className="ps-0 ps-lg-4">
                     <div className="mb-4 mb-lg-5">
-                      <p className="h4 mb-3">{contact.title}</p>
-                      <Markdown content={contact.content} />
+                      <p className="h4 mb-3">{"We'd love to hear from you."}</p>
+                      <Markdown content="We'll answer every question you might have. Look forward to hearing from you" />
                     </div>
                     <p className="mb-3">
                       {/* prettier-ignore */}
                       <Email className="d-inline-block me-3 text-dark" />
-                      <a className="text-link" href={`mailto:${contact.email}`}>
-                        {contact.email}
+                      <a className="text-link" href={`mailto:info@thebrif.com`}>
+                        info@thebrif.com
                       </a>
                     </p>
                     <p className="mb-0">
                       <Phone className="d-inline-block me-3 text-dark" />
                       <a
                         className="text-link active"
-                        href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                        href={`tel:+233200450877`}
                       >
-                        {contact.phone}
+                        +233 20 045 0877
                       </a>
                     </p>
                   </div>
@@ -161,8 +169,6 @@ export default Contact;
 // Export Props
 export const getStaticProps = () => {
   return {
-    props: {
-      contactPage: getSinglePage("content/contact.md"),
-    },
+    props: {},
   };
 };
