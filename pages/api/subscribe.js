@@ -29,11 +29,9 @@ export default async (req, res) => {
     }),
   });
 
-  const data = await _res.text();
-
-  if (data === "Created") {
-    res.status(200);
-  } else {
-    res.status(400);
+  if (_res.status === 200) {
+    return res.status(200).json({ success: true });
   }
+
+  return res.status(400).json({ error: data });
 };
