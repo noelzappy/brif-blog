@@ -9,7 +9,6 @@ import { DM_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
-import Modal from "@/components/Modal";
 
 const dm_sans = DM_Sans({
   weight: ["400", "500"],
