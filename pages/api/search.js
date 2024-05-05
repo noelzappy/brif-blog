@@ -1,32 +1,20 @@
 /* eslint-disable import/no-anonymous-default-export */
-import fs from "fs";
-import matter from "gray-matter";
-import path from "path";
+import * as API from "@/libs/contentApi";
 
-export default (req, res) => {
-  let posts;
-
-  if (process.env.NODE_ENV === "production") {
-    posts = require("../../cache/data").posts;
-  } else {
-    const blogDirFiles = fs.readdirSync(path.join("content/blog"));
-    const blogs = blogDirFiles.filter((f) => f.includes(".md"));
-
-    posts = blogs.map((filename) => {
-      const slug = filename.replace(".md", "");
-      const dirFileContents = fs.readFileSync(
-        path.join("content/blog", filename),
-        "utf8"
-      );
-
-      const { data: frontMatter } = matter(dirFileContents);
-
-      return {
-        slug,
-        frontMatter,
-      };
-    });
+export default async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  res.status(200).json(JSON.stringify(posts));
+  const POSTS = await API.getAllPosts();
+
+  const matchedPosts = POSTS.filter((post) => {
+    const valuesToMatch =
+      `${post.title} ${post.excerpt} ${post.slug} ${post.primary_tag.name} ${post.primary_author.name}`.toLowerCase();
+    return valuesToMatch.toLowerCase().indexOf(req.body.q.toLowerCase()) >= 0;
+  });
+
+  res.status(200).json({
+    posts: matchedPosts,
+  });
 };

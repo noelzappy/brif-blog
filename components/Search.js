@@ -3,47 +3,33 @@
 import BlurImage from "@/components/BlurImage";
 import { AppContext } from "@/components/UseContext";
 import { formatDate } from "@/utils/formatDate";
-import { slugify } from "@/utils/slugify";
-import { sortArrayByCount } from "@/utils/sortArrayByCount";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import * as API from "@/libs/contentApi";
 
 const Search = () => {
   // Get All Posts from API
   const [allPosts, setAllPosts] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [recentPosts, setRecentPosts] = useState([]);
   useEffect(() => {
-    const getResults = async () => {
-      const res = await fetch("/api/search");
-      const post = await res.json();
-      const posts = JSON.parse(post);
-      setAllPosts(posts);
+    const getInitialData = async () => {
+      try {
+        const _recentPosts = await API.getRecentPosts();
+        const _tags = await API.getTags();
+        setTags(_tags);
+        setRecentPosts(_recentPosts);
+      } catch (error) {
+        //
+      }
     };
-    getResults();
+    getInitialData();
   }, []);
-
-  // Get Post Tags
-  const allTags = allPosts.map((tag) => tag.frontMatter.tags);
-  const flatTags = allTags.flat();
-  const uniqueTags = sortArrayByCount(flatTags);
 
   // Search Stuffs
   const { toggleSearch } = useContext(AppContext);
   const [searchOpen, setSearchOpen] = toggleSearch;
   const [searchTerm, setSearchTerm] = useState("");
-
-  const searchResults = allPosts.filter((searchResult) => {
-    if (searchTerm === "") {
-      return "";
-    } else if (
-      searchResult.frontMatter.title.toLowerCase().includes(searchTerm) ||
-      searchResult.frontMatter.description.toLowerCase().includes(searchTerm) ||
-      searchResult.frontMatter.author.toLowerCase().includes(searchTerm) ||
-      searchResult.frontMatter.tags[0].toLowerCase().includes(searchTerm) ||
-      searchResult.frontMatter.categories[0].toLowerCase().includes(searchTerm)
-    ) {
-      return searchResult;
-    }
-  });
 
   // search input focus
   searchOpen
@@ -56,6 +42,26 @@ const Search = () => {
     setSearchOpen(!searchOpen);
     setSearchTerm("");
   };
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      return;
+    }
+    const search = async () => {
+      const res = await await fetch("/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ q: searchTerm }),
+      });
+      const post = await res.json();
+
+      // const posts = JSON.parse(post);
+      setAllPosts(post?.posts || []);
+    };
+    search();
+  }, [searchTerm]);
 
   return (
     <>
@@ -95,32 +101,32 @@ const Search = () => {
           aria-label="search-query"
         />
 
-        {searchResults.length ? (
+        {allPosts.length ? (
           <>
             <p className="h4 my-4">
-              <span className="font-secondary">{searchResults.length} </span>
-              {searchResults.length > 1 ? "results" : "result"} found
+              <span className="font-secondary">{allPosts.length} </span>
+              {allPosts.length > 1 ? "results" : "result"} found
             </p>
             <div className="search-results row g-3 gy-md-4">
-              {searchResults.map((r, i) => (
+              {allPosts.map((r, i) => (
                 <div
-                  key={i}
+                  key={r.id}
                   className="col-6 col-sm-4"
                   onClick={() => resetSearchInput(true)}
                 >
                   <Link href={`/articles/${r.slug}`}>
                     <BlurImage
                       className="mw-100 h-auto"
-                      src={r.frontMatter.image}
-                      alt={r.frontMatter.title}
+                      src={r.feature_image}
+                      alt={r.title}
                       width="180"
                       height="120"
                     />
                     <span className="d-block mt-3 mb-2 text-muted date">
-                      {formatDate(r.frontMatter.date)}
+                      {formatDate(r.published_at)}
                     </span>
                     <p className="h5 mb-0 d-inline text-link line-clamp clamp-2">
-                      {r.frontMatter.title}
+                      {r.title}
                     </p>
                   </Link>
                 </div>
@@ -140,24 +146,21 @@ const Search = () => {
             <p className="title h4 mb-0">Popular topics</p>
           </div>
           <ul className="taxonomy-lists list-unstyled d-flex flex-wrap gap-2">
-            {uniqueTags.slice(0, 13).map((item, i) => (
+            {tags.slice(0, 13).map((item, i) => (
               <li
                 key={i}
                 className="d-inline-block"
                 onClick={() => resetSearchInput(true)}
               >
-                <Link
-                  href={`/tags/${slugify(item.value)}`}
-                  className="bg-white d-block"
-                >
-                  {item.value} <sup>{item.count}</sup>
+                <Link href={`/tags/${item.slug}`} className="bg-white d-block">
+                  {item.name}
                 </Link>
               </li>
             ))}
             <li className="d-inline-block">
               <Link
                 className="border-0 pe-0 d-inline-flex align-items-center"
-                href="/tags/"
+                href="/articles/"
               >
                 All Topice
                 <svg
@@ -185,39 +188,34 @@ const Search = () => {
               <p className="title h4 mb-0">Recent posts</p>
             </div>
             <div className="row gy-4">
-              {allPosts.slice(0, 5).map((post, i) => (
+              {recentPosts.slice(0, 5).map((post, i) => (
                 <div className="col-md-6" key={i}>
                   <article className="row gx-3 align-items-start position-relative">
                     <div className="col-auto">
                       <BlurImage
-                        src={post.frontMatter.image}
-                        alt={post.frontMatter.title}
+                        src={post.feature_image}
+                        alt={post.title}
                         width="75"
                         height="75"
                       />
                     </div>
 
                     <div className="col">
-                      {post.frontMatter.categories.map((category, i) => (
-                        <span
-                          key={i}
-                          className="d-block lh-1 mb-2 zIndexed line-clamp clamp-2"
-                        >
-                          <Link
-                            className="small lh-1 text-muted text-link"
-                            href={`/categories/${slugify(category)}`}
-                          >
-                            {category}
-                          </Link>
-                        </span>
-                      ))}
-
                       <Link
                         className="fs-lg lh-base text-dark text-link stretched-link"
                         href={`/articles/${post.slug}`}
                       >
-                        {post.frontMatter.title}
+                        {post.title}
                       </Link>
+
+                      <span className="d-block lh-1 mb-2 zIndexed line-clamp clamp-2">
+                        <Link
+                          className="small lh-1 text-muted text-link"
+                          href={`/tags/${post.primary_tag.slug}`}
+                        >
+                          {post.primary_tag.name}
+                        </Link>
+                      </span>
                     </div>
                   </article>
                 </div>

@@ -8,6 +8,10 @@ const api = new GhostContentAPI({
   version: "v5.82",
 });
 
+export const getAllPosts = async () => {
+  return api.posts.browse({ include: "authors,tags" });
+};
+
 export const getPosts = async (page = 1) => {
   return api.posts.browse({
     include: "authors,tags",
@@ -26,7 +30,7 @@ export const getFeaturedPosts = async () => {
 
 export const getRecentPosts = async () => {
   return api.posts.browse({
-    include: "authors",
+    include: "authors,tags",
     limit: 6,
     published_at: `> '${new Date(
       new Date().setDate(new Date().getDate() - 30)
