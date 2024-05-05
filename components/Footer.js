@@ -1,12 +1,46 @@
 import BootstrapIcon from "@/components/BootstrapIcon";
 import menu from "@/config/menus.json";
 import siteConfig from "@/config/site.config.json";
-import subscription from "@/config/subscription.json";
 import { ArrowUpRight } from "@/utils/Icons";
 import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Footer = () => {
   const { socialLinks } = siteConfig;
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const onSubmit = async (e) => {
+    if (!email || !name) return toast.error("Please fill all the fields.");
+
+    toast.loading("Subscribing...", {
+      id: "subscribe",
+      position: "bottom-right",
+    });
+
+    e.preventDefault();
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, name }),
+    });
+
+    if (res.status === 200) {
+      setEmail("");
+      setName("");
+      toast.success("Thank you for subscribing!", {
+        id: "subscribe",
+      });
+    } else {
+      toast.error("Something went wrong! Please try again.", {
+        id: "subscribe",
+      });
+    }
+  };
 
   return (
     <footer className="bg-white">
@@ -16,62 +50,40 @@ const Footer = () => {
             <div className="row gy-5 align-items-center justify-content-center text-center text-md-start">
               <div className="col-xl-5 col-lg-5 col-md-6 col-sm-10">
                 <div className="pe-0 pe-xl-4">
-                  <h2 className="mb-3 lh-sm">{subscription.title}</h2>
-                  <p className="mb-0">{subscription.subtitle}</p>
+                  <h2 className="mb-3 lh-sm">
+                    Subscribe to our monthly newsletter
+                  </h2>
+                  <p className="mb-0">
+                    Stay up-to-date about latest tech and new world. Unsubscribe
+                    at anytime!
+                  </p>
                 </div>
               </div>
               <div className="col-xl-4 col-lg-5 col-md-6">
                 <div className="ps-0 ps-xl-4">
                   <div id="mc_embed_signup">
-                    <form
-                      action={subscription.mailChimpFormAction}
-                      method="post"
-                      id="mc-embedded-subscribe-form"
-                      name="mc-embedded-subscribe-form"
-                      target="_blank"
-                    >
+                    <div>
                       <div id="mc_embed_signup_scroll" className="input-group">
                         <input
                           type="text"
-                          name="NAME"
                           className="form-control w-100"
-                          id="mce-NAME"
-                          placeholder={subscription.formNamePlaceholder}
+                          placeholder="Your Name"
                           aria-label="Name"
                           autoComplete="new-name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                         />
                         <input
                           type="email"
-                          name="EMAIL"
                           className="form-control w-100 required email"
-                          id="mce-EMAIL"
-                          placeholder={subscription.formEmailPlaceholder}
+                          placeholder="Your Email"
                           aria-label="Subscription"
                           autoComplete="new-email"
                           required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
-                        <div id="mce-responses" className="clear">
-                          <div
-                            className="response"
-                            id="mce-error-response"
-                            style={{ display: "none" }}
-                          ></div>
-                          <div
-                            className="response"
-                            id="mce-success-response"
-                            style={{ display: "none" }}
-                          ></div>
-                        </div>
-                        <div
-                          style={{ position: "absolute", left: "-5000px" }}
-                          aria-hidden="true"
-                        >
-                          <input
-                            type="text"
-                            name={subscription.mailChimpFormName}
-                            tabIndex="-1"
-                          />
-                        </div>
+
                         <div className="input-group-append w-100">
                           <button
                             type="submit"
@@ -79,13 +91,14 @@ const Footer = () => {
                             id="mc-embedded-subscribe"
                             className="input-group-text w-100 mb-0"
                             aria-label="Subscription Button"
+                            onClick={onSubmit}
                           >
-                            {subscription.formButtonLabel}
+                            Subscribe
                             <ArrowUpRight className="ms-auto" />
                           </button>
                         </div>
                       </div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>

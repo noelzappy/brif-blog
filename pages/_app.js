@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { DM_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "react-hot-toast";
 
 const dm_sans = DM_Sans({
   weight: ["400", "500"],
@@ -34,6 +35,7 @@ export default function TushiApp({ Component, pageProps }) {
           </section>
 
           <Footer />
+          <Toaster />
         </main>
       </ThemeProvider>
     </AppContext.Provider>

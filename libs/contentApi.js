@@ -1,7 +1,9 @@
 import GhostContentAPI from "@tryghost/content-api";
 
+export const API_URL = "https://panel.brifhq.com";
+
 const api = new GhostContentAPI({
-  url: "https://panel.brifhq.com",
+  url: API_URL,
   key: "1151a00fd722b07dd0b8d4d8a9",
   version: "v5.82",
 });
