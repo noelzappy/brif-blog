@@ -6,7 +6,7 @@ export default (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const API_KEY = process.env.NEXT_PUBLIC_MAILGUN_API_KEY;
+  const API_KEY = process.env.MAILGUN_API_KEY;
 
   // console.log(req.body, API_KEY);
 
