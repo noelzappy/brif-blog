@@ -6,7 +6,6 @@ import { formatDate } from "@/utils/formatDate";
 import { ArrowRight, ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
-import { useCallback, useEffect, useState } from "react";
 import PostCarousel from "@/components/PostCarousel";
 
 const Home = ({
