@@ -16,21 +16,42 @@ const Home = ({
   financePosts,
   techPosts,
   businessPosts,
+  settings,
 }) => {
   return (
-    <Layout metaTitle={"Home"}>
+    <Layout
+      metaTitle={settings.title}
+      metaDescription={settings.description}
+      ogImage={settings.og_image}
+      metaAuthor={settings.title}
+      orgTitle={settings.og_title}
+      twitter={settings.twitter}
+      twitterImage={settings.twitter_image}
+      twitterDescription={settings.twitter_description}
+      twitterTitle={settings.twitter_title}
+      metaKeyword={tags.map((tag) => tag.name).join(",")}
+    >
       {/* Banner */}
       <section className="py-5 bg-white overflow-hidden position-relative">
         <div className="container">
-          <div class="row">
+          <div class="row  hidden-sm">
             <div class="col-8">
               <PostCarousel slides={featuredPosts} />
             </div>
-            <div class=" col-md">
-              {featuredPosts.slice(0, 5).map((post) => {
+            <div class="col-md bg-body pt-3 d-none d-md-block">
+              <Link href="/articles">
+                <BlurImage
+                  src="/images/news-made-social.gif"
+                  alt="Banner"
+                  className="img-fluid rounded-1 shadow-lg mb-5"
+                  width={400}
+                  height={400}
+                />
+              </Link>
+              {featuredPosts.slice(0, 7).map((post) => {
                 return (
                   <div
-                    className="position-relative border p-3 mb-3"
+                    className="position-relative border-bottom p-3 mb-3"
                     key={post.id}
                   >
                     <h6 className="h6 text-left mb-2line-clamp clamp-3">
@@ -107,7 +128,7 @@ const Home = ({
           </div>
           <div className="row gy-5 gx-md-5">
             {businessPosts.slice(0, 6).map((post) => (
-              <div key={post.id} className="col-lg-4 col-md-6">
+              <div key={post.id} className="col-lg-4 col-md-6 border pt-3">
                 <Post post={post} />
               </div>
             ))}

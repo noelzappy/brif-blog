@@ -5,12 +5,9 @@ import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 
 const EmblaCarousel = ({ slides, options }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-    },
-    [Autoplay({ playOnInit: true, delay: 7000 })]
-  );
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [
+    Autoplay({ playOnInit: true, delay: 7000 }),
+  ]);
 
   return (
     <section className="embla d-none d-md-block">
@@ -18,7 +15,7 @@ const EmblaCarousel = ({ slides, options }) => {
         <div className="embla__container">
           {slides.map((post) => (
             <div className="embla__slide" key={post.id}>
-              <div class="row hidden-sm d-none d-md-block">
+              <div class="row d-block">
                 <div className="col-lg">
                   <BlurImage
                     className="w-100 h-auto"

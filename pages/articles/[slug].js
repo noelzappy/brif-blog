@@ -17,7 +17,7 @@ export default function PostPage({ post, relatedPosts }) {
 
   const handleScroll = useCallback(() => {
     if (window.scrollY > window.innerHeight * 0.25) {
-      console.log("Hello");
+      // console.log("Hello");
       if (doNotShowAgain) {
         return;
       }

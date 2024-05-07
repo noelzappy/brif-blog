@@ -10,32 +10,33 @@
   "logo": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo.png",
   "logo_light": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo-1.png",
   "logoText": "theBrif",
-  "favicon": "/images/favicon.png",
+  "favicon": "https://blog.brifhq.com/content/images/2024/05/brif-logo-white.jpeg",
   "postPerPage": 6,
   "homeTwoPostPerPage": 4,
 
   "copyright": "© 2024 theBrif. All rights reserved.",
+  "twitter": "https://twitter.com/thebrifhq",
 
   "socialLinks": [
     {
       "name": "Facebook",
       "icon": "BsFacebook",
-      "link": "https://facebook.com/"
+      "link": "https://facebook.com/thebrifhq"
     },
     {
       "name": "Twitter",
       "icon": "BsTwitter",
-      "link": "https://twitter.com/"
+      "link": "https://twitter.com/thebrifhq"
     },
     {
       "name": "Linkedin",
       "icon": "BsLinkedin",
-      "link": "https://linkedin.com/"
+      "link": "https://linkedin.com/company/thebrifhq"
     },
     {
       "name": "Youtube",
       "icon": "BsYoutube",
-      "link": "https://youtube.com/"
+      "link": "https://youtube.com/@brifhq"
     }
   ]
 }
