@@ -32,7 +32,7 @@ const Home = ({
       metaKeyword={tags.map((tag) => tag.name).join(",")}
     >
       {/* Banner */}
-      <section className="py-5 bg-white overflow-hidden position-relative">
+      <section className="bg-white overflow-hidden position-relative">
         <div className="container">
           <div class="row  hidden-sm">
             <div class="col-8">
