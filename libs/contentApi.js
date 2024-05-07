@@ -1,6 +1,6 @@
 import GhostContentAPI from "@tryghost/content-api";
 
-export const API_URL = "https://panel.brifhq.com";
+export const API_URL = "https://blog.brifhq.com";
 
 const api = new GhostContentAPI({
   url: API_URL,
