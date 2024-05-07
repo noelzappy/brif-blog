@@ -1,49 +1,68 @@
 import BlurImage from "@/components/BlurImage";
 import Layout from "@/components/Layout";
-import Pagination from "@/components/Pagination";
 import Post from "@/components/Post";
 import Markdown from "@/components/ReactMarkdown";
 import { formatDate } from "@/utils/formatDate";
 import { ArrowRight, ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
+import { useCallback, useEffect, useState } from "react";
+import PostCarousel from "@/components/PostCarousel";
 
-const Home = ({ featuredPosts, recentPosts, authors, tags, meta }) => {
+const Home = ({
+  featuredPosts,
+  recentPosts,
+  authors,
+  tags,
+  financePosts,
+  techPosts,
+  businessPosts,
+}) => {
   return (
     <Layout metaTitle={"Home"}>
       {/* Banner */}
-      <section className="banner bg-white overflow-hidden">
+      <section className="py-5 bg-white overflow-hidden position-relative">
         <div className="container">
-          <div className="row">
-            <div className="col-12 position-relative text-center">
-              <h1 className="title display-4 d-inline mb-0">
-                <BannerShape />
-                <Markdown content={"Welcome to <br/>theBrif"} inline={true} />
-              </h1>
-
-              <p className="lead mt-4 mb-0">
-                <Markdown
-                  content="Informing & Fostering Meaningful conversations that empower the Young African Professional."
-                  inline={true}
-                />
-              </p>
+          <div class="row">
+            <div class="col-8">
+              <PostCarousel slides={featuredPosts} />
+            </div>
+            <div class=" col-md">
+              {featuredPosts.slice(0, 5).map((post) => {
+                return (
+                  <div
+                    className="position-relative border p-3 mb-3"
+                    key={post.id}
+                  >
+                    <h6 className="h6 text-left mb-2line-clamp clamp-3">
+                      <Link
+                        href={`/articles/${post.slug}`}
+                        className="text-link stretched-link"
+                        title={post.title}
+                      >
+                        {post.title}
+                      </Link>
+                    </h6>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
       {/* Featured Posts */}
-      {featuredPosts && featuredPosts.length > 3 && (
+      {financePosts && financePosts.length > 3 && (
         <section className="featured-posts section">
           <div className="container">
             <div className="row align-items-center section-title">
               <div className="col-sm-7">
                 <h2 className="h3 mb-0 title">
-                  <Markdown content="Featured Posts" inline={true} />
+                  <Markdown content="Finance" inline={true} />
                 </h2>
               </div>
               <div className="col-sm-5 text-end d-none d-sm-block">
-                <Link href="/articles/" className="text-link lead active">
+                <Link href="/tags/finance" className="text-link lead active">
                   <Markdown content="View All" inline={true} />
                   <ArrowUpRight />
                 </Link>
@@ -51,33 +70,78 @@ const Home = ({ featuredPosts, recentPosts, authors, tags, meta }) => {
             </div>
             <div className="row gy-5 gx-md-5">
               <div className="col-lg-4 col-md-6 order-0">
-                <Post post={featuredPosts[0]} />
+                <Post post={financePosts[0]} />
               </div>
               <div className="col-lg-4 col-md-12 order-2 order-lg-1">
                 <div className="row gx-0 gx-md-5 gx-lg-0 gy-5">
                   <div className="col-lg-12 col-md-6">
-                    <Post post={featuredPosts[1]} compact={true} />
+                    <Post post={financePosts[1]} compact={true} />
                   </div>
                   <div className="col-lg-12 col-md-6">
-                    <Post post={featuredPosts[2]} compact={true} />
+                    <Post post={financePosts[2]} compact={true} />
                   </div>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 order-1 order-lg-2">
-                <Post post={featuredPosts[3]} />
+                <Post post={financePosts[3]} />
               </div>
             </div>
-            {/*          <div className="d-block d-sm-none mt-5 pt-3">
-            <div className="text-center">
-              <Link href="/featured/" className="text-link lead active">
+          </div>
+        </section>
+      )}
+
+      {/* Business Posts */}
+      <section className="section bg-white">
+        <div className="container">
+          <div className="row align-items-center section-title">
+            <div className="col-sm-7">
+              <h2 className="h3 mb-0 title">
+                <Markdown content="Business" inline={true} />
+              </h2>
+            </div>
+            <div className="col-sm-5 text-end d-none d-sm-block">
+              <Link href="/tags/business" className="text-link lead active">
                 <Markdown content="View All" inline={true} />
                 <ArrowUpRight />
               </Link>
             </div>
-  </div> */}
           </div>
-        </section>
-      )}
+          <div className="row gy-5 gx-md-5">
+            {businessPosts.slice(0, 6).map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Posts */}
+      <section className="section">
+        <div className="container">
+          <div className="row align-items-center section-title">
+            <div className="col-sm-7">
+              <h2 className="h3 mb-0 title">
+                <Markdown content="Tech" inline={true} />
+              </h2>
+            </div>
+            <div className="col-sm-5 text-end d-none d-sm-block">
+              <Link href="/tags/tech" className="text-link lead active">
+                <Markdown content="View All" inline={true} />
+                <ArrowUpRight />
+              </Link>
+            </div>
+          </div>
+          <div className="row gy-5 gx-md-5">
+            {techPosts.slice(0, 6).map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* All Categories */}
       <section className="section bg-white">
         <div className="container">
@@ -93,7 +157,7 @@ const Home = ({ featuredPosts, recentPosts, authors, tags, meta }) => {
               </div>
 
               <div className="row row g-3 taxonomy-lists">
-                {tags?.slice(0, 9).map((item, i) => (
+                {tags.slice(0, 9).map((item, i) => (
                   <div className="col-md-4 col-6" key={item.id}>
                     <Link
                       href={`/tags/${item.slug}`}
@@ -131,20 +195,11 @@ const Home = ({ featuredPosts, recentPosts, authors, tags, meta }) => {
             </div>
           </div>
           <div className="row gy-5 gx-md-5">
-            {recentPosts?.slice(0, 6).map((post) => (
+            {recentPosts.slice(0, 6).map((post) => (
               <div key={post.id} className="col-lg-4 col-md-6">
                 <Post post={post} />
               </div>
             ))}
-
-            {recentPosts && recentPosts.length && (
-              <div className="col-12 text-center pt-4 mt-5">
-                <Pagination
-                  currentPage={meta?.pagination?.page}
-                  numberOfPages={meta?.pagination?.pages}
-                />
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -288,6 +343,9 @@ export const getStaticProps = async () => {
   const authors = await API.getAuthors();
   const settings = await API.getSettings();
   const tags = await API.getTags();
+  const financePosts = await API.getPostsByTag("finance");
+  const techPosts = await API.getPostsByTag("tech");
+  const businessPosts = await API.getPostsByTag("business");
 
   return {
     props: {
@@ -295,7 +353,10 @@ export const getStaticProps = async () => {
       recentPosts,
       authors,
       tags,
-      meta: recentPosts.meta,
+      settings,
+      financePosts,
+      techPosts,
+      businessPosts,
     },
   };
 };
