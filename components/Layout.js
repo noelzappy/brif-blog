@@ -2,7 +2,6 @@
 
 import siteConfig from "@/config/site.config.json";
 import Head from "next/head";
-import GoogleAnalytics from "./GoogleAnalytics";
 
 const Layout = ({
   metaTitle,
@@ -22,7 +21,6 @@ const Layout = ({
   return (
     <>
       <Head>
-        <GoogleAnalytics />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
