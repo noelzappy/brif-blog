@@ -32,51 +32,32 @@ const Home = ({
       twitterTitle={settings.twitter_title}
       metaKeyword={tags.map((tag) => tag.name).join(",")}
     >
-      {/* Banner */}
-      <section className="bg-white overflow-hidden position-relative">
-        <div className="container d-none d-md-block">
-          <div class="row hidden-sm">
-            <div class="col-8">
-              <PostCarousel slides={featuredPosts} />
-            </div>
-            <div class="col-md bg-body pt-3">
-              <Link href="/articles">
-                <BlurImage
-                  src="/images/news-made-social.gif"
-                  alt="Banner"
-                  className="img-fluid rounded-1 shadow-lg mb-5"
-                  width={400}
-                  height={400}
-                />
-              </Link>
-              {featuredPosts.slice(0, 5).map((post) => {
-                return (
-                  <div
-                    className="position-relative border-bottom p-3"
-                    key={post.id}
-                  >
-                    <h6 className="h6 text-left mb-2line-clamp clamp-3">
-                      <Link
-                        href={`/articles/${post.slug}`}
-                        className="text-link stretched-link"
-                        title={post.title}
-                      >
-                        {post.title}
-                      </Link>
-                    </h6>
-                  </div>
-                );
-              })}
-            </div>
+      {/* Recent Posts */}
+      <section className="section">
+        <div className="container">
+          <div className="row gy-5 gx-md-5">
+            {techPosts.slice(0, 3).map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <Post post={post} />
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="container d-block d-md-none">
-          <MobileCarousel slides={featuredPosts} />
+        <div className="container d-flex pt-5 justify-content-center align-content-center mt-5">
+          <Link href="/articles">
+            <BlurImage
+              src="/images/news-made-social.gif"
+              alt="Banner"
+              className="img-fluid rounded-1 shadow-lg"
+              width={500}
+              height={80}
+            />
+          </Link>
         </div>
       </section>
 
-      {/* Featured Posts */}
+      {/* Finance Posts */}
       {financePosts && financePosts.length > 3 && (
         <section className="featured-posts section">
           <div className="container">
