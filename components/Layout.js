@@ -22,6 +22,7 @@ const Layout = ({
   return (
     <>
       <Head>
+        <GoogleAnalytics />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -55,8 +56,6 @@ const Layout = ({
           href={siteConfig.favicon}
           type="image/x-icon"
         />
- 
-        <GoogleAnalytics />
       </Head>
 
       {children}
