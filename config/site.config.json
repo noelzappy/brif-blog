@@ -10,7 +10,7 @@
   "logo": "/images/brif-logo.png",
   "logo_light": "/images/brif-logo-1.png",
   "logoText": "theBrif",
-  "favicon": "https://blog.brifhq.com/content/images/2024/05/brif-logo-white.jpeg",
+  "favicon": "/images/favicon.png",
   "postPerPage": 6,
   "homeTwoPostPerPage": 4,
 
