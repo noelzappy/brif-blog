@@ -116,7 +116,7 @@ const Search = () => {
                 >
                   <Link href={`/articles/${r.slug}`}>
                     <BlurImage
-                      className="mw-100 h-auto"
+                      className="mw-100 h-auto rounded-3"
                       src={r.feature_image}
                       alt={r.title}
                       width="180"
@@ -195,6 +195,7 @@ const Search = () => {
                       <BlurImage
                         src={post.feature_image}
                         alt={post.title}
+                        className="rounded-3"
                         width="75"
                         height="75"
                       />
