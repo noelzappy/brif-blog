@@ -20,7 +20,7 @@ const EmblaCarousel = ({ slides }) => {
               <div class="row d-block">
                 <div className="col-lg">
                   <BlurImage
-                    className="w-100 h-auto"
+                    className="w-100"
                     src={post.feature_image}
                     alt={post.title}
                     width="468"
