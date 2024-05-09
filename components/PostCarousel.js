@@ -3,9 +3,11 @@ import useEmblaCarousel from "embla-carousel-react";
 import BlurImage from "./BlurImage";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import AutoHeight from "embla-carousel-auto-height";
 
-const EmblaCarousel = ({ slides, options }) => {
+const EmblaCarousel = ({ slides }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
+    AutoHeight(),
     Autoplay({ playOnInit: true, delay: 7000 }),
   ]);
 

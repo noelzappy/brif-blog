@@ -48,7 +48,7 @@ const Home = ({
                   height={400}
                 />
               </Link>
-              {featuredPosts.slice(0, 7).map((post) => {
+              {featuredPosts.slice(0, 6).map((post) => {
                 return (
                   <div
                     className="position-relative border-bottom p-3 mb-3"
