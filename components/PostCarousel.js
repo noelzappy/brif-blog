@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import BlurImage from "./BlurImage";
 import Link from "next/link";
