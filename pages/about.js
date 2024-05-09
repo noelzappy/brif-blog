@@ -2,8 +2,7 @@ import BlurImage from "@/components/BlurImage";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import Markdown from "@/components/ReactMarkdown";
-import { ArrowUpRight, EditCircle } from "@/utils/Icons";
-import { sortArrayByCount } from "@/utils/sortArrayByCount";
+import { ArrowUpRight } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
 
@@ -75,12 +74,16 @@ const About = ({ posts, about, authors }) => {
               <div className="row align-items-center section-title">
                 <div className="col-sm-7">
                   <h2 className="h3 mb-0 title">
-                    <Markdown content="Our Team" inline={true} />
+                    <Markdown content="Top Authors" inline={true} />
                   </h2>
                 </div>
                 <div className="col-sm-5 text-end d-none d-sm-block">
-                  <Link href="/articles/" className="text-link lead active">
-                    <Markdown content="View Works" inline={true} />
+                  <Link
+                    href="https://brifhq.com"
+                    className="text-link lead active"
+                    target="_blank"
+                  >
+                    <Markdown content="Learn More" inline={true} />
                     <ArrowUpRight />
                   </Link>
                 </div>

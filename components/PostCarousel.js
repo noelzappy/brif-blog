@@ -7,12 +7,12 @@ import AutoHeight from "embla-carousel-auto-height";
 
 const EmblaCarousel = ({ slides }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
-    AutoHeight(),
     Autoplay({ playOnInit: true, delay: 7000 }),
+    AutoHeight(),
   ]);
 
   return (
-    <section className="embla d-none d-md-block">
+    <section className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((post) => (

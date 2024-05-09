@@ -7,6 +7,7 @@ import { ArrowRight, ArrowUpRight, Calender, Clock } from "@/utils/Icons";
 import Link from "next/link";
 import * as API from "@/libs/contentApi";
 import PostCarousel from "@/components/PostCarousel";
+import MobileCarousel from "@/components/MobileCarousel";
 
 const Home = ({
   featuredPosts,
@@ -33,12 +34,12 @@ const Home = ({
     >
       {/* Banner */}
       <section className="bg-white overflow-hidden position-relative">
-        <div className="container">
-          <div class="row  hidden-sm">
+        <div className="container d-none d-md-block">
+          <div class="row hidden-sm">
             <div class="col-8">
               <PostCarousel slides={featuredPosts} />
             </div>
-            <div class="col-md bg-body pt-3 d-none d-md-block">
+            <div class="col-md bg-body pt-3">
               <Link href="/articles">
                 <BlurImage
                   src="/images/news-made-social.gif"
@@ -48,10 +49,10 @@ const Home = ({
                   height={400}
                 />
               </Link>
-              {featuredPosts.slice(0, 6).map((post) => {
+              {featuredPosts.slice(0, 5).map((post) => {
                 return (
                   <div
-                    className="position-relative border-bottom p-3 mb-3"
+                    className="position-relative border-bottom p-3"
                     key={post.id}
                   >
                     <h6 className="h6 text-left mb-2line-clamp clamp-3">
@@ -68,6 +69,10 @@ const Home = ({
               })}
             </div>
           </div>
+        </div>
+
+        <div className="container d-block d-md-none">
+          <MobileCarousel slides={featuredPosts} />
         </div>
       </section>
 
