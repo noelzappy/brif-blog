@@ -7,7 +7,25 @@
 
     {
       "name": "Articles",
-      "link": "/articles"
+      "link": "/articles",
+      "submenu": [
+        {
+          "name": "All",
+          "link": "/articles"
+        },
+        {
+          "name": "Tech",
+          "link": "/tags/tech"
+        },
+        {
+          "name": "Business",
+          "link": "/tags/business"
+        },
+        {
+          "name": "World",
+          "link": "/tags/world"
+        }
+      ]
     },
     {
       "name": "About",
