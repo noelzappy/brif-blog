@@ -29,7 +29,10 @@ const Layout = ({
         <title>{metaTitle}</title>
 
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-        <meta name="keyword" content={metaKeyword} />
+        <meta
+          name="keyword"
+          content={`${metaKeyword}, theBrif, BrifHQ, brif Ghana, Brif, Brif GH`}
+        />
         <meta name="author" content={metaAuthor} />
         <meta name="description" content={metaDescription} />
 
