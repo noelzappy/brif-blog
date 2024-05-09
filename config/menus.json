@@ -11,22 +11,26 @@
     },
     {
       "name": "About",
-      "link": "/about"
+      "link": "https://brifhq.com/about",
+      "target": "_blank"
     },
 
     {
       "name": "Contact",
-      "link": "/contact"
+      "link": "https://brifhq.com/contact",
+      "target": "_blank"
     }
   ],
   "footerMenu": [
     {
       "name": "Terms of service",
-      "link": "/terms-of-service"
+      "link": "https://brifhq.com/tos",
+      "target": "_blank"
     },
     {
       "name": "Privacy policy",
-      "link": "/privacy"
+      "link": "https://brifhq.com/privacy",
+      "target": "_blank"
     }
   ]
 }

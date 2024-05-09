@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Search from "@/components/Search";
 import { AppContext } from "@/components/UseContext";
@@ -245,6 +245,7 @@ const Header = () => {
                             data-bs-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
+                            target={n.target}
                           >
                             {n.name}
                           </a>
@@ -258,6 +259,7 @@ const Header = () => {
                                       ? `active`
                                       : ""
                                   }`}
+                                  target={n.target}
                                 >
                                   {n.name}
                                 </Link>
