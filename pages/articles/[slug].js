@@ -73,7 +73,7 @@ export default function PostPage({ post, relatedPosts }) {
                 <div className="post-author d-flex flex-wrap align-items-center">
                   <p className="mb-0 me-3 lh-base">
                     <Link
-                      href={`/author/${post.primary_author.slug}`}
+                      href={`/authors/${post.primary_author.slug}`}
                       className="is-hoverable"
                       title={`Read all posts by - ${post.primary_author.name}`}
                     >
