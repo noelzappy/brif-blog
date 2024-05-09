@@ -7,8 +7,8 @@
     "ogImage": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo.png"
   },
   "baseURL": "https://thebrif.com",
-  "logo": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo.png",
-  "logo_light": "https://thebrif.com/wp-content/uploads/2023/09/brif-logo-1.png",
+  "logo": "/images/brif-logo.png",
+  "logo_light": "/images/brif-logo-1.png",
   "logoText": "theBrif",
   "favicon": "https://blog.brifhq.com/content/images/2024/05/brif-logo-white.jpeg",
   "postPerPage": 6,

@@ -29,7 +29,7 @@ export default function TushiApp({ Component, pageProps }) {
 
   return (
     <AppContext.Provider value={{ toggleSearch: [searchOpen, setSearchOpen] }}>
-      <ThemeProvider defaultTheme="dark" attribute="class">
+      <ThemeProvider defaultTheme="light" attribute="class">
         <main className={`${dm_sans.className} d-flex flex-column bg-body`}>
           <NextTopLoader />
           <Header />
